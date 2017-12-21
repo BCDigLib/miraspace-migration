@@ -3,7 +3,9 @@
 require 'nokogiri'
 
 Dir.glob('*.xml') do |file|
+  puts "Processing #{file}..."
   mets_doc = Nokogiri::XML(File.open(file))
   objid = mets_doc.remove_namespaces!.xpath('/mets/@OBJID').to_s
+  objid.split('/').last
   File.rename(file, "#{objid}.xml")
 end
