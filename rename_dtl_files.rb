@@ -10,9 +10,7 @@ end
 
 filenames = {}
 
-# For some reason, Excel saved my CSV as a TSV, so I had to specify :col_sep
-# param as "\t". This may not always be the case.
-CSV.foreach('sqldata.csv', { :col_sep => "\t" }) { |row| filenames[row[0]] = row[4] }
+CSV.foreach('sqldata.csv') { |row| filenames[row[0]] = row[4] }
 
 mac_version = %x[touch 'rename_pids.sh']
 win_version = %x[touch 'rename_pids.bat']
