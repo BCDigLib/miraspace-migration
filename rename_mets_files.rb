@@ -4,6 +4,6 @@ require 'nokogiri'
 
 Dir.glob('*.xml') do |file|
   mets_doc = Nokogiri::XML(File.open(file))
-  objid = mets_doc.xpath('/mets:mets/@objid', 'mets' => 'http://www.loc.gov/METS')
+  objid = mets_doc.remove_namespaces!.xpath('/mets/@OBJID').to_s
   File.rename(file, "#{objid}.xml")
 end
