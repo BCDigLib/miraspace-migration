@@ -17,7 +17,7 @@ CSV.foreach('sqldata.csv', { :col_sep => "\t" }) { |row| filenames[row[0]] = row
 mac_version = %x[touch 'rename_pids.sh']
 win_version = %x[touch 'rename_pids.bat']
 
-# Using the hash we created, add the rename statements to the shells scripts
+# Using the hash we created, add the rename statements to the shell scripts
 filenames.each do |pid, fname|
   File.open('rename_pids.sh', 'a') { |file| file.write("mv #{pid} #{fname}\n")}
   File.open('rename_pids.bat', 'a') { |file| file.write("ren #{pid} #{fname}\n")}
