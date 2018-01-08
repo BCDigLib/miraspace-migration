@@ -1,5 +1,7 @@
 # Generates shell scripts (.bat and .sh) to rename DigiTool image files from
 # their PID to their actual filename based on SQL query results in a CSV.
+# For a sample CSV, see sqldata.csv in the bc-commencement subdirectory of 
+# the Miraspace-test dir in dennis2.
 
 require 'csv'
 
