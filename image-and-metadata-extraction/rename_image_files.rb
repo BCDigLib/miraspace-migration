@@ -12,6 +12,8 @@ end
 
 filenames = {}
 
+# Note that position might vary; check your csv to make sure that row[0] is 
+# the pid and row[4] the filename. Modify the indexes in your local repo as needed.
 CSV.foreach('sqldata.csv') { |row| filenames[row[0]] = row[4] }
 
 mac_version = %x[touch 'rename_pids.sh']
