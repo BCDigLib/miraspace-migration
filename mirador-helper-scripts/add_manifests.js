@@ -1,6 +1,6 @@
 /*
-Note: this script is for testing purposes only. It might not be 
-necessary in production, since we wouldn't link users directly 
+Note: this script is for testing purposes only. It might not be
+necessary in production, since we wouldn't link users directly
 to the Mirador landing page that lists all the objects.
 */
 
@@ -40,6 +40,6 @@ function func(data) {
   Mirador['data'].push(location);
 }
 
-var input = fs.createReadStream('manifests/manifests.txt');
+var input = fs.createReadStream('./manifests.txt');
 readLines(input, func);
 console.log(Mirador);
