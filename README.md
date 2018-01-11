@@ -4,3 +4,5 @@ ArchivesSpace, Mirador, and Alma/Primo.
 
 Additional documentation is available on the wiki (BC login required): 
 https://bcwiki.bc.edu/display/UL/MiraSpace+Solution+Implementation
+
+See also: https://github.com/BCLibraries/mets-to-iiif
