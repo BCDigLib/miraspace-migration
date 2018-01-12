@@ -35,7 +35,7 @@ function readLines(input, func) {
 function func(data) {
   location = {
     manifestUri: data,
-    location: "My Repository"
+    location: "Boston College"
   };
   Mirador['data'].push(location);
 }
