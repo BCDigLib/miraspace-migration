@@ -1,6 +1,11 @@
 Files to query and extract descriptive metadata from DigiTool
 -------------------------------------------------------------
 
+*The DigiTool API is not always effective. The recommended method for retrieving 
+metadata from DigiTool is the 'Export Digital Entities' job in the staff interface.
+Please see the [BC wiki](https://bcwiki.bc.edu/display/UL/Export+Digital+Entities) 
+for more information (staff login required).*
+
 Files needed:
     getMetadata.pl -> Perl script to access API
     query.xml -> XML file containing search parameters
