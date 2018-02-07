@@ -8,8 +8,8 @@
         <x_where from="HDeControl">
             <x_condition>
                 <type>contains</type>
-                <element>partitionb</element>
-                <value>islandoragraduate</value>
+                <element>partitionc</element>
+                <value>Brooker</value>
             </x_condition> 
         </x_where>
     </x_query>
