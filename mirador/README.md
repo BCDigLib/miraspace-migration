@@ -1,5 +1,5 @@
 ## Mirador Utilities and Stylesheets
-### add_manifests.js
+#### add_manifests.js
 Creates a Mirador Javascript object containing links to IIIF
 manifests on library.bc.edu, which can be added to an existing Mirador instance.
 
@@ -17,17 +17,17 @@ for manifest in manifests/*.json; do echo "https://library.bc.edu/iiif/manifests
 Mirador Javascript object, add its contents to the existing Mirador object so
 you don't overwrite any manifest links that are already in the viewer.
 
-### mirador-bc.css
+#### mirador-bc.css
 Includes local customizations to Mirador's appearance. This stylesheet should be 
 loaded after 'mirador-combined.css'.
 
-### mirador-plugins
+#### mirador-plugins
 A plugin suite developed by the Bavarian State Library. We currently use the 
 Bookmarkable Viewer State Plugin, or [ViewFromUrl](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state),
 to link directly to manifests and canvases.
 
 ## Mirador Usage Notes
-### Linking to thumbnails, manifests, and canvases
+#### Linking to thumbnails, manifests, and canvases
 To request a thumbnail, use the syntax provided by the [IIIF Image API](http://iiif.io/api/image/2.1/#image-request-uri-syntax). 
 The parameters can be adjusted as needed. E.g., to request a 200x200 thumbnail: 
 http://loris_server.bc.edu/image_id.jp2/full/!200,200/0/default.jpg
@@ -48,8 +48,8 @@ with other canvases listed below
 * BookView: loads two canvases in the viewer at once
 * ThumbnailsView: lists all canvases in a gallery view
 
-### Generating manifests
-Our [manifest generator](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem
-that takes a METS file as input and creates a simple IIIF manifest. This has been tested 
-only with METS that conforms to the BC application profile. Once we confirm broader 
-compatibility, we will publish it to rubygems.org. Feeback and pull requests are welcome.
+#### Generating manifests
+[metsiiif](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem that converts 
+a METS file to a IIIF manifest. This has been tested only with METS that conforms 
+to the BC application profile. We will publish it to rubygems.org once we confirm 
+broader compatibility. Feeback and pull requests are welcome.
