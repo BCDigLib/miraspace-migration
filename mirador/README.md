@@ -1,5 +1,6 @@
-## add_manifests.js
-This script creates a Mirador Javascript object containing links to IIIF
+## Mirador Utilities and Stylesheets
+### add_manifests.js
+Creates a Mirador Javascript object containing links to IIIF
 manifests on library.bc.edu, which can be added to an existing Mirador instance.
 
 This is for testing purposes only, as we probably won't need a public-facing list
@@ -16,14 +17,28 @@ for manifest in manifests/*.json; do echo "https://library.bc.edu/iiif/manifests
 Mirador Javascript object, add its contents to the existing Mirador object so
 you don't overwrite any manifest links that are already in the viewer.
 
-## Linking to thumbnails, manifests, and canvases
+### mirador-bc.css
+Includes local customizations to Mirador's appearance. This stylesheet should be 
+loaded after 'mirador-combined.css'.
+
+### mirador-plugins
+A plugin suite developed by the Bavarian State Library. We currently use the 
+Bookmarkable Viewer State Plugin, or [ViewFromUrl](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state),
+to link directly to manifests and canvases.
+
+## Mirador Usage Notes
+### Linking to thumbnails, manifests, and canvases
 To request a thumbnail, use the syntax provided by the [IIIF Image API](http://iiif.io/api/image/2.1/#image-request-uri-syntax). 
 The parameters can be adjusted as needed. E.g., to request a 200x200 thumbnail: 
 http://loris_server.bc.edu/image_id.jp2/full/!200,200/0/default.jpg
 
-We use the Bavarian State Library's [Bookmarkable Viewer State plugin](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state) 
-to link to manifests and canvases. Links should be constructed using query string 
-syntax: http://mirador_server.bc.edu/mirador_dir/?view=ImageView&manifest=https://library.bc.edu/path_to_manifest.json&canvas=http://loris_server.bc.edu/canvas_id/page_id
+We use a [Bavarian State Library plugin](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state) 
+to link directly to manifests and canvases. Links should be constructed using query 
+string syntax, e.g.: 
+
+```
+http://mirador_server.bc.edu/mirador_dir/?view=ImageView&manifest=https://library.bc.edu/path_to_manifest.json&canvas=http://loris_server.bc.edu/canvas_id/page_id
+```
 
 In the example above, the canvas parameter is optional. The view parameter can be 
 set to any of the following:
@@ -33,6 +48,8 @@ with other canvases listed below
 * BookView: loads two canvases in the viewer at once
 * ThumbnailsView: lists all canvases in a gallery view
 
-Our [manifest generator](https://github.com/BCLibraries/mets-to-iiif) provides 
-basic structure in the form of ranges, so regardless of the view selected, the 
-viewer will load with a sidebar listing the canvases in order.
+### Generating manifests
+Our [manifest generator](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem
+that takes a METS file as input and creates a simple IIIF manifest. This has been tested 
+only with METS that conforms to the BC application profile. Once we confirm broader 
+compatibility, we will publish it to rubygems.org. Feeback and pull requests are welcome.
