@@ -1,0 +1,24 @@
+/* Includes BC branding and other local Mirador styles.
+ * Load after 'mirador-combined.css'. */
+
+body {
+    font-size: 80%;
+}
+
+a.fullscreen-viewer {
+    display: none;
+}
+
+.mirador-container .mirador-main-menu-bar {
+    border-bottom: 1px solid #dccaa0;
+    background: #8a100b url(https://library.bc.edu/theme/img/title_295x30_transparent_whitetext.png) no-repeat 5%;
+}
+
+.mirador-container .mirador-main-menu a {
+    color: #fff;
+    opacity: .8;
+}
+
+.mirador-container .mirador-main-menu a:hover {
+    color: #c0bda5;
+}
