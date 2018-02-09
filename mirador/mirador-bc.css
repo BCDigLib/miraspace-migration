@@ -5,29 +5,35 @@ body {
     font-size: 80%;
 }
 
-a.fullscreen-viewer {
-    display: none;
-}
-
 .mirador-container .mirador-main-menu-bar {
     border-bottom: 1px solid #dccaa0;
-    background: #8a100b url(https://library.bc.edu/theme/img/title_295x30_transparent_whitetext.png) 5% no-repeat;
+    background-color: #8a100b;
 }
 
-.mirador-container .mirador-main-menu a {
+#bc-logo {
+    background-image: url(https://library.bc.edu/theme/img/title_295x30_transparent_whitetext.png);
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    color: transparent;
+    overflow: hidden;
+    width: 295px;
+    height: 30px;
+    margin-top: -6px;
+}
+
+.mirador-container .mirador-main-menu-bar a {
     color: #fff;
     opacity: .8;
 }
 
-.mirador-container .mirador-main-menu a:hover {
+.mirador-main-menu-bar a:hover {
     color: #c0bda5;
 }
 
 @media only screen and (max-width: 500px) {
     a.change-layout {
         display: none;
-    }
-    .mirador-container .mirador-main-menu-bar {
-        background: #8a100b url(https://library.bc.edu/theme/img/title_295x30_transparent_whitetext.png) center no-repeat;
     }
 }
