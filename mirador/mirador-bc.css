@@ -32,6 +32,12 @@ body {
     color: #c0bda5;
 }
 
+#viewer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
 @media only screen and (max-width: 500px) {
     a.change-layout {
         display: none;
