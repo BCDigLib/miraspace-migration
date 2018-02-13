@@ -1,8 +1,4 @@
-/*
-Note: this script is for testing purposes only. It might not be
-necessary in production, since we wouldn't link users directly
-to the Mirador landing page that lists all the objects.
-*/
+// Note: this script is for testing purposes only. 
 
 var fs = require('fs');
 
@@ -46,7 +42,7 @@ function readLines(input, func) {
   });
 }
 
-function func(data) {
+function loadManifestData(data) {
   location = {
     "manifestUri": data,
     "location": "Boston College"
@@ -54,11 +50,11 @@ function func(data) {
   loaded = {
     "loadedManifest": data,
     "viewType": "ImageView"
-  }
-  Mirador['data'].push(location);
-  Mirador['windowObjects'].push(loaded);
+  };
+  Mirador["data"].push(location);
+  Mirador["windowObjects"].push(loaded);
 }
 
 var input = fs.createReadStream('./manifests.txt');
-readLines(input, func);
+readLines(input, loadManifestData);
 console.log(Mirador);
