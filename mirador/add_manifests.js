@@ -7,8 +7,22 @@ to the Mirador landing page that lists all the objects.
 var fs = require('fs');
 
 var Mirador = {
-  id: "viewer",
-  data: []
+  "id": "viewer",
+  "mainMenuSettings": {
+    "buttons": {
+      "bookmark": false,
+      "fullScreenViewer": false
+    },
+    "userLogo": {
+      "label": "Boston College Library",
+      "attributes": {
+        "id": "bc-logo",
+        "href": "https://library.bc.edu"
+      }
+    }
+  },
+  "data": [],
+  "windowObjects": []
 };
 
 function readLines(input, func) {
@@ -34,10 +48,15 @@ function readLines(input, func) {
 
 function func(data) {
   location = {
-    manifestUri: data,
-    location: "Boston College"
+    "manifestUri": data,
+    "location": "Boston College"
   };
+  loaded = {
+    "loadedManifest": data,
+    "viewType": "ImageView"
+  }
   Mirador['data'].push(location);
+  Mirador['windowObjects'].push(loaded);
 }
 
 var input = fs.createReadStream('./manifests.txt');
