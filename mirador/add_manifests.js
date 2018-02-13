@@ -24,7 +24,7 @@ function readLines(input, func) {
 }
 
 function loadManifestData(data) {
-  var Mirador = {
+  var miradorObj = {
     "id": "viewer",
     "mainMenuSettings": {
       "buttons": {
@@ -42,20 +42,21 @@ function loadManifestData(data) {
     "data": [],
     "windowObjects": []
   };
-
-  location = {
+  var location = {
     "manifestUri": data,
     "location": "Boston College"
   };
-  loaded = {
+  var loaded = {
     "loadedManifest": data,
     "viewType": "ImageView"
   };
+  var identifier = data.split('/').pop().slice(0, -5);
 
-  Mirador["data"].push(location);
-  Mirador["windowObjects"].push(loaded);
-  
-  console.log(JSON.stringify(Mirador));
+  miradorObj["data"].push(location);
+  miradorObj["windowObjects"].push(loaded);
+
+  console.log(JSON.stringify(miradorObj));
+  console.log(identifier);
 }
 
 var input = fs.createReadStream('./manifests.txt');
