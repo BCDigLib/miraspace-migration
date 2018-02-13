@@ -2,25 +2,6 @@
 
 var fs = require('fs');
 
-var Mirador = {
-  "id": "viewer",
-  "mainMenuSettings": {
-    "buttons": {
-      "bookmark": false,
-      "fullScreenViewer": false
-    },
-    "userLogo": {
-      "label": "Boston College Library",
-      "attributes": {
-        "id": "bc-logo",
-        "href": "https://library.bc.edu"
-      }
-    }
-  },
-  "data": [],
-  "windowObjects": []
-};
-
 function readLines(input, func) {
   var remaining = '';
 
@@ -43,6 +24,25 @@ function readLines(input, func) {
 }
 
 function loadManifestData(data) {
+  var Mirador = {
+    "id": "viewer",
+    "mainMenuSettings": {
+      "buttons": {
+        "bookmark": false,
+        "fullScreenViewer": false
+      },
+      "userLogo": {
+        "label": "Boston College Library",
+        "attributes": {
+          "id": "bc-logo",
+          "href": "https://library.bc.edu"
+        }
+      }
+    },
+    "data": [],
+    "windowObjects": []
+  };
+
   location = {
     "manifestUri": data,
     "location": "Boston College"
@@ -51,10 +51,12 @@ function loadManifestData(data) {
     "loadedManifest": data,
     "viewType": "ImageView"
   };
+
   Mirador["data"].push(location);
   Mirador["windowObjects"].push(loaded);
+  
+  console.log(JSON.stringify(Mirador));
 }
 
 var input = fs.createReadStream('./manifests.txt');
 readLines(input, loadManifestData);
-console.log(Mirador);
