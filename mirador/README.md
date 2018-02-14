@@ -18,7 +18,7 @@ package, remove the `pretty()` method from the `doc` variable assignment. Then,
 comment out the line requiring the module:
 
 ```javascript
-var pretty = require('pretty');
+// var pretty = require('pretty');
 ```
 
 3. Create a file with manifest locations by running the following from the
