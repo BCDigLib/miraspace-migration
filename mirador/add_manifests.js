@@ -1,15 +1,15 @@
-// Note: this script is for testing purposes only. 
 var fs = require('fs');
+var pretty = require('pretty');
 
 function buildDocument(miradorObj, identifier) {
-  var doc = '<!DOCTYPE html>'
-       + '<html>' + '<head>' + '<title>' + identifier + '</title>' +
+  var doc = pretty('<!DOCTYPE html>'
+       + '<html>' + '<head>' + '<title>' + identifier + '</title>'
        + '<meta charset="UTF-8">' + '<meta name="viewport" content="device-width, initial-scale=1.0">'
        + '<link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css">'
        + '<link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css">'
        + '<script src="build/mirador/mirador.js"></script>' + '</head>' + '<body>'
        + '<div id="viewer"></div>' + '<script type="text/javascript">'
-       + '$(function() { Mirador(' + miradorObj + '); });' + '</script>' + '</body>' + '</html>';
+       + '$(function() { Mirador(' + miradorObj + '); });' + '</script>' + '</body>' + '</html>');
 
   fs.writeFile(identifier, doc, (err) => {
     if (err) throw err;
