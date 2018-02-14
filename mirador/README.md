@@ -53,7 +53,7 @@ to link directly to manifests and canvases. Links should be constructed using qu
 string syntax, e.g.: 
 
 ```
-`http://mirador_server.bc.edu/iiif/?view=ImageView&manifest=https://library.bc.edu/path_to_manifest.json&canvas=http://loris_server.bc.edu/canvas_id/page_id`
+http://mirador_server.bc.edu/iiif/?view=ImageView&manifest=https://library.bc.edu/path_to_manifest.json&canvas=http://loris_server.bc.edu/canvas_id/page_id
 ```
 
 In the example above, the canvas parameter is optional. The view parameter can be 
