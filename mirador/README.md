@@ -1,41 +1,31 @@
 ## Mirador Utilities and Stylesheets
-#### add_manifests.js
-Generates HTML landing pages for Mirador that load all necessary CSS and 
-and JavaScripts and link to IIIF manifests hosted on library.bc.edu. As 
-currently written, this script creates one page per manifest.
+#### generate_mirador_view.rb
+Takes a IIIF manifest as input and outputs an HTML landing page for Mirador.
 
-We are testing this method as an alternative to the Bavarian State Library's 
+As currently written, this script creates one page per manifest. We are testing 
+this method as an alternative to the Bavarian State Library's 
 [Bookmarkable Viewer State plugin](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state) 
 (see ['Linking to thumbnails, manifests, and canvases'](#linking-to-thumbnails-manifests-and-canvases)
 for more information).
 
 Usage:
-1. Install [nodejs](https://nodejs.org/en/).
 
-2. Optionally, install the [pretty nodejs module](https://www.npmjs.com/package/pretty). 
-This will pretty-print the outputted HTML document. If you choose not to use this 
-package, remove the `pretty()` method from the `doc` variable assignment. Then, 
-comment out the line requiring the module:
+1. Create one or more IIIF manifests using the [metsiiif gem](https://github.com/BCLibraries/mets-to-iiif)).
 
-```javascript
-// var pretty = require('pretty');
-```
-
-3. Create a file with manifest locations by running the following from the
-directory where your manifests are located:
+2. Run generate_mirador_view.rb on the manifest you created, e.g.:
 
 ```bash
-for manifest in manifests/*.json; do echo "https://library.bc.edu/iiif/manifests/$manifest" >> manifests.txt; done
+ruby generate_mirador_view.rb BC1988_027_ref57.json > BC1988_027_ref57
 ```
 
-4. Run the add_manifests script from the same directory as manifests.txt:
+Or, if you are generating multiple Mirador pages at once:
 
 ```bash
-node add_manifests.js
+for manifest in ./commencement-photos/manifests/*.json; do ruby generate_mirador_view.rb $manifest > `basename $manifest .json`
 ```
 
-5. Copy the files to the Mirador server. You should now be able to view a 
-manifest in Mirador using its ArchivesSpace identifier in the URI, e.g.: 
+3. Copy the output file(s) to the Mirador server. You should now be able to view 
+a manifest in Mirador using its ArchivesSpace identifier in the URI, e.g.: 
 `http://mirador_server.bc.edu/iiif/BC1988_027_ref57`
 
 #### mirador-bc.css
