@@ -18,7 +18,7 @@ Usage:
 ruby generate_mirador_view.rb BC1988_027_ref57.json > BC1988_027_ref57
 ```
 
-Or, if you are generating multiple Mirador pages at once:
+Or use a 'for' loop if you are generating multiple Mirador pages at once:
 
 ```bash
 for manifest in ./commencement-photos/manifests/*.json; do ruby generate_mirador_view.rb $manifest > `basename $manifest .json`; done
