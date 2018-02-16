@@ -1,7 +1,7 @@
 require 'json'
 require 'pathname'
 
-def handle_inputs(manifest_file)
+def handle_input(manifest_file)
     if ARGV.empty?
     puts "Error: no argument supplied"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
@@ -18,6 +18,12 @@ def handle_inputs(manifest_file)
     puts "Error: #{json_file} could not be found"
     exit
   end
+end
+
+def parse_manifest(manifest_file)
+  f = File.read(manifest_file)
+  manifest_hash = JSON.parse(f)
+  manifest_uri = 'https://library.bc.edu/iiif/manifests/'
 end
 
 def construct_mirador_object(manifest_uri, handle)
@@ -55,30 +61,30 @@ def construct_mirador_object(manifest_uri, handle)
 end
 
 def build_document(mirador_object, identifier)
-  doc = <<EOF
-  <!DOCTYPE html>
-  <html>
+  doc = <<-EOF
+<!DOCTYPE html>
+<html>
 
-  <head>
-    <title>#{identifier}</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
-    <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
-    <script src="build/mirador/mirador.js"></script>
-  </head>
+<head>
+  <title>#{identifier}</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
+  <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
+  <script src="build/mirador/mirador.js"></script>
+</head>
 
-  <body>
-    <div id="viewer"></div>
-    <script type="text/javascript">
-      $(function() {
-        Mirador(#{mirador_object.to_json});
-    </script>
-  </body>
+<body>
+  <div id="viewer"></div>
+  <script type="text/javascript">
+    $(function() {
+      Mirador(#{mirador_object.to_json});
+  </script>
+</body>
 
-  </html>
+</html>
   EOF
 end
 
 input_file = ARGV[0]
-handle_inputs(input_file)
+handle_input(input_file)
