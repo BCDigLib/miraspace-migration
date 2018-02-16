@@ -86,6 +86,7 @@ def build_document(file)
   <script type="text/javascript">
     $(function() {
       Mirador(#{mirador});
+    });
   </script>
 </body>
 
