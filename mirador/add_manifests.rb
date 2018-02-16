@@ -10,7 +10,7 @@ def handle_input(file)
     puts "Error: takes only one argument\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
-  elsif json_file.slice(-5, 5) != '.json'
+  elsif file.slice(-5, 5) != '.json'
     puts "Error: input file must be JSON\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
@@ -27,10 +27,14 @@ end
 
 def construct_mirador_object(file)
   manifest_hash = parse_manifest_file(file)
-  manifest_uri = "https://library.bc.edu/iiif/manifests/#{identifier}"
-  handle = manifest_hash
+  handle = manifest_hash["metadata"][0]["handle"]
+  manifest_uri = manifest_hash["@id"]
 
-  mirador = {
+  location = { "manifestUri": manifest_uri, "location": "Boston College" }
+  loaded = { "loadedManifest": manifest_uri, "viewType": "ImageView" }
+  hdl_button = { "class": "handle", "href": handle }
+
+  @mirador_hash = {
     "id": "viewer",
     "mainMenuSettings": {
       "buttons": {
@@ -53,17 +57,17 @@ def construct_mirador_object(file)
     "data": [],
     "windowObjects": []
   }
-  location = { "manifestUri": manifest_uri, "location": "Boston College" }
-  loaded = { "loadedManifest": manifest_uri, "viewType": "ImageView" }
-  hdl_button = { "class": "handle", "href": handle }
 
-  mirador[:data].push(location)
-  mirador[:windowObjects].push(loaded)
-  mirador[:mainMenuSettings][:userButtons][0][:attributes] = hdl_button
+  @mirador_hash[:data].push(location)
+  @mirador_hash[:windowObjects].push(loaded)
+  @mirador_hash[:mainMenuSettings][:userButtons][0][:attributes] = hdl_button
 end
 
-def build_document(mirador_object)
-  identifer = 
+def build_document(file)
+  construct_mirador_object(file)
+  identifier = File.basename(file, File.extname(file))
+  mirador = JSON.pretty_generate(@mirador_hash)
+  
   doc = <<-EOF
 <!DOCTYPE html>
 <html>
@@ -81,13 +85,16 @@ def build_document(mirador_object)
   <div id="viewer"></div>
   <script type="text/javascript">
     $(function() {
-      Mirador(#{mirador_object.to_json});
+      Mirador(#{mirador});
   </script>
 </body>
 
 </html>
   EOF
+
+  puts doc
 end
 
 input_file = ARGV[0]
 handle_input(input_file)
+build_document(input_file)
