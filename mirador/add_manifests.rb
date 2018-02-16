@@ -1,7 +1,7 @@
 require 'json'
 require 'pathname'
 
-def handle_inputs(json_file)
+def handle_inputs(manifest_file)
     if ARGV.empty?
     puts "Error: no argument supplied"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
@@ -45,7 +45,6 @@ def construct_mirador_object(manifest_uri, handle)
     "data": [],
     "windowObjects": []
   }
-
   location = { "manifestUri": manifest_uri, "location": "Boston College" }
   loaded = { "loadedManifest": manifest_uri, "viewType": "ImageView" }
   hdl_button = { "class": "handle", "href": handle }
@@ -56,10 +55,30 @@ def construct_mirador_object(manifest_uri, handle)
 end
 
 def build_document(mirador_object, identifier)
+  doc = <<EOF
+  <!DOCTYPE html>
+  <html>
+
+  <head>
+    <title>#{identifier}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
+    <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
+    <script src="build/mirador/mirador.js"></script>
+  </head>
+
+  <body>
+    <div id="viewer"></div>
+    <script type="text/javascript">
+      $(function() {
+        Mirador(#{mirador_object.to_json});
+    </script>
+  </body>
+
+  </html>
+  EOF
 end
 
-manifest = ARGV[0]
-handle_inputs(manifest)
-
-#manifest_hash = JSON.parse(manifest)
-#puts manifest_hash.to_json
+input_file = ARGV[0]
+handle_inputs(input_file)
