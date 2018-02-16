@@ -2,7 +2,7 @@ require 'json'
 require 'pathname'
 
 def handle_inputs(json_file, txt_file)
-  if ARGV.empty?
+    if ARGV.empty?
     puts "Error: no argument supplied"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
@@ -31,5 +31,5 @@ manifest_list = './manifests.txt'
 
 handle_inputs(manifest, manifest_list)
 
-#manifest_hash = JSON.parse(json_file)
+#manifest_hash = JSON.parse(manifest)
 #puts manifest_hash.to_json
