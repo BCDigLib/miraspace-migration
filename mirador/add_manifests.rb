@@ -1,7 +1,7 @@
 require 'json'
 require 'pathname'
 
-def handle_input(manifest_file)
+def handle_input(file)
     if ARGV.empty?
     puts "Error: no argument supplied"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
@@ -14,19 +14,22 @@ def handle_input(manifest_file)
     puts "Error: input file must be JSON\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
-  elsif !Pathname(json_file).exist?
-    puts "Error: #{json_file} could not be found"
+  elsif !Pathname(file).exist?
+    puts "Error: #{file} could not be found"
     exit
   end
 end
 
-def parse_manifest(manifest_file)
-  f = File.read(manifest_file)
-  manifest_hash = JSON.parse(f)
-  manifest_uri = 'https://library.bc.edu/iiif/manifests/'
+def parse_manifest_file(file)
+  f = File.read(file)
+  JSON.parse(f)
 end
 
-def construct_mirador_object(manifest_uri, handle)
+def construct_mirador_object(file)
+  manifest_hash = parse_manifest_file(file)
+  manifest_uri = "https://library.bc.edu/iiif/manifests/#{identifier}"
+  handle = manifest_hash
+
   mirador = {
     "id": "viewer",
     "mainMenuSettings": {
@@ -37,7 +40,6 @@ def construct_mirador_object(manifest_uri, handle)
       "userButtons": [{
         "label": "View Library Record",
         "iconClass": "fa fa-external-link",
-        # TODO: pull handles from JSON
         "attributes": {}
       }],
       "userLogo": {
@@ -60,7 +62,8 @@ def construct_mirador_object(manifest_uri, handle)
   mirador[:mainMenuSettings][:userButtons][0][:attributes] = hdl_button
 end
 
-def build_document(mirador_object, identifier)
+def build_document(mirador_object)
+  identifer = 
   doc = <<-EOF
 <!DOCTYPE html>
 <html>
