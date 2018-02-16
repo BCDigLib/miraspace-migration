@@ -1,7 +1,7 @@
 require 'json'
 require 'pathname'
 
-def handle_inputs(json_file, txt_file)
+def handle_inputs(json_file)
     if ARGV.empty?
     puts "Error: no argument supplied"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
@@ -14,8 +14,8 @@ def handle_inputs(json_file, txt_file)
     puts "Error: input file must be JSON\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
-  elsif !Pathname(txt_file).exist?
-    puts "Error: #{txt_file} could not be found"
+  elsif !Pathname(json_file).exist?
+    puts "Error: #{json_file} could not be found"
     exit
   end
 end
@@ -58,11 +58,8 @@ end
 def build_document(mirador_object, identifier)
 end
 
-
 manifest = ARGV[0]
-manifest_list = './manifests.txt'
-
-handle_inputs(manifest, manifest_list)
+handle_inputs(manifest)
 
 #manifest_hash = JSON.parse(manifest)
 #puts manifest_hash.to_json
