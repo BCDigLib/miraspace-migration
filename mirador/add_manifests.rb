@@ -10,8 +10,8 @@ def handle_input(file)
     puts "Error: takes only one argument\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
-  elsif file.slice(-5, 5) != '.json'
-    puts "Error: input file must be JSON\n"
+  elsif File.extname(file) != '.json'
+    puts "Error: argument must be a JSON file\n"
     puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
     exit
   elsif !Pathname(file).exist?
