@@ -44,7 +44,7 @@ def construct_mirador_object(file)
       "userButtons": [{
         "label": "View Library Record",
         "iconClass": "fa fa-external-link",
-        "attributes": { "class": "handle", "href": handle }
+        "attributes": { "class": "handle", "href": handle, "target": "_blank" }
       }],
       "userLogo": {
         "label": "Boston College Library",
