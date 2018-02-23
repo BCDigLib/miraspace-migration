@@ -35,7 +35,6 @@ def construct_mirador_object(file)
 
   @mirador_hash = {
     "id": "viewer",
-    # "saveSession": true, # Save each session to storage for sharing purposes
     "mainMenuSettings": {
       "buttons": {
         "bookmark": false,
