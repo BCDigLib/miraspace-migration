@@ -34,10 +34,7 @@ $(function() {
       // TODO: handle multiple slots
     }
     var mirWindow = slot.window;
-    var uri = mirWindow.manifest.uri,
-        parts = uri.split("/"),
-        last_idx = parts.length - 1,
-        img_id = mirWindow.focusModules.ImageView.currentImg["label"],
+    var img_id = mirWindow.focusModules.ImageView.currentImg["label"],
         focusType = mirWindow.currentImageMode;
 
     if (focusType !== "ImageView") {
@@ -52,7 +49,7 @@ $(function() {
       return;
     }
 
-    var canvas = document.getElementsByName("canvas")[0];
+    var canvas = 'https://library.bc.edu/'
     canvas.toBlob(function(blob) {
       saveAs(blob, `${img_id}.jpg`)
     });
