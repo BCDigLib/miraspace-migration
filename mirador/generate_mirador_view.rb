@@ -28,6 +28,7 @@ def parse_manifest_file(file)
   JSON.parse(f)
 end
 
+# TODO: Update views to contain mdObj instead of Mirador objects (see download_canvas.js)
 def construct_mirador_object(file)
   manifest_hash = parse_manifest_file(file)
   handle = manifest_hash["metadata"][0]["handle"]
