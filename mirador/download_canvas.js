@@ -1,4 +1,28 @@
+var bcViewer;
 $(function() {
+  $(function() {
+  var l = window.mdObj;
+
+  bcViewer = Mirador({
+    "id": "viewer",
+    "mainMenuSettings": {
+      "buttons": {
+        "bookmark": false,
+        "fullScreenViewer": false
+      },
+      "userButtons": l.MIRADOR_BUTTONS,
+      "userLogo": {
+        "label": "Boston College Library",
+        "attributes": {
+          "id": "bc-logo",
+          "href": "https://library.bc.edu"
+        }
+      }
+    },
+    "data": l.MIRADOR_DATA,
+    "windowObjects": l.MIRADOR_WOBJECTS
+  });
+  
   var saveImage = function(e) {
     $('#dl-link').click(function(e) { 
       e.preventDefault();
