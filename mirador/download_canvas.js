@@ -1,6 +1,5 @@
 var bcViewer;
 $(function() {
-  $(function() {
   /* mdObj refers to an object declared in the corresponding HTML file that 
   defines various viewer attributes for a given resource */
   var l = window.mdObj;
