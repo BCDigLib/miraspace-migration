@@ -67,5 +67,8 @@ $(function() {
     });
   }
 
-  $(document).on('contextmenu', 'canvas', saveImage);
+  window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
+    e.preventDefault();
+    e.saveImage();
+  }, false);
 });
