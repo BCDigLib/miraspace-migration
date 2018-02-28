@@ -34,8 +34,11 @@ $(function() {
       // TODO: handle multiple slots
     }
     var mirWindow = slot.window;
-    var img_id = mirWindow.focusModules.ImageView.currentImg["label"],
-        focusType = mirWindow.currentImageMode;
+    var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
+        focusType = mirWindow.currentImageMode,
+        canvasUriBase = 'https://scenery.bc.edu/',
+        canvasUriSuffix = '/full/full/0/default.jpg',
+        canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix;
 
     if (focusType !== "ImageView") {
       var $error = $('#error-modal');
@@ -49,8 +52,7 @@ $(function() {
       return;
     }
 
-    var canvas = 'https://library.bc.edu/'
-    canvas.toBlob(function(blob) {
+    canvasUri.toBlob(function(blob) {
       saveAs(blob, `${img_id}.jpg`)
     });
   });
