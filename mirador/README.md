@@ -32,6 +32,10 @@ a manifest in Mirador using its ArchivesSpace identifier in the URI, e.g.:
 Includes local customizations to Mirador's appearance. This stylesheet should be 
 loaded in the Mirador landing page after 'mirador-combined.css'. 
 
+#### download_canvas.js
+A work-in-progress plugin to allow end users to download the currently displayed 
+canvas at full resolution.
+
 ## Mirador Usage Notes
 #### Linking to thumbnails, manifests, and canvases
 To request a thumbnail, use the syntax provided by the [IIIF Image API](http://iiif.io/api/image/2.1/#image-request-uri-syntax). 
