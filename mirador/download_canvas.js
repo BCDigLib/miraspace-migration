@@ -1,6 +1,8 @@
 var bcViewer;
 $(function() {
   $(function() {
+  /* mdObj refers to an object declared in the corresponding HTML file that 
+  defines various viewer attributes for a given resource */
   var l = window.mdObj;
 
   bcViewer = Mirador({
@@ -22,7 +24,8 @@ $(function() {
     "data": l.MIRADOR_DATA,
     "windowObjects": l.MIRADOR_WOBJECTS
   });
-  
+
+  // Largely borrowed from Harvard. Needs retooling.
   var saveImage = function(e) {
     $('#dl-link').click(function(e) { 
       e.preventDefault();
