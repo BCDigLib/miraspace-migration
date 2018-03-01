@@ -24,9 +24,7 @@ $(function() {
     "windowObjects": l.MIRADOR_WOBJECTS
   });
 
-  // Largely borrowed from Harvard. Needs retooling.
-  $('#dl-link').click(function(e) { 
-    e.preventDefault();
+  var downloadImage = $(function() { 
     var slot = null;
     if (bcViewer.viewer.workspace.slots.length == 1) {
       slot = bcViewer.viewer.workspace.slots[0];
@@ -51,6 +49,9 @@ $(function() {
       $error.dialog($.extend({title: 'Function Unavailable'}, dialogBaseOpts)).dialog('open');
       return;
     }
+
+    var a = document.getElementById("dl-link");
+    a.href = canvasUri;
 
     /*
     canvasUri.toBlob(function(blob) {
