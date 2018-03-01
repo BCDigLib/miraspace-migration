@@ -52,9 +52,11 @@ $(function() {
       return;
     }
 
+    /*
     canvasUri.toBlob(function(blob) {
       saveAs(blob, `${img_id}.jpg`)
     });
+    */
   });
 
   /*
