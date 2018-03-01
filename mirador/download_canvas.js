@@ -24,7 +24,7 @@ $(function() {
     "windowObjects": l.MIRADOR_WOBJECTS
   });
 
-  var downloadImage = $(function() { 
+  $("#dl-link").click(function() { 
     var slot = null;
     if (bcViewer.viewer.workspace.slots.length == 1) {
       slot = bcViewer.viewer.workspace.slots[0];
