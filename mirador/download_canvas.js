@@ -30,11 +30,13 @@ $(document).on('click', '#dl-link', function() {
   }
   var mirWindow = slot.window;
   var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
+      filename = imgId + '.jpg',
       canvasUriBase = 'http://scenery.bc.edu/',
       canvasUriSuffix = '/full/full/0/default.jpg',
       canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix;
   var a = document.getElementById("dl-link");
   a.href = canvasUri;
+  a.download = filename;
 });
 
 window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
