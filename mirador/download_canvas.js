@@ -52,12 +52,6 @@ $(function() {
 
     var a = document.getElementById("dl-link");
     a.href = canvasUri;
-
-    /*
-    canvasUri.toBlob(function(blob) {
-      saveAs(blob, `${img_id}.jpg`)
-    });
-    */
   });
 
   window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
