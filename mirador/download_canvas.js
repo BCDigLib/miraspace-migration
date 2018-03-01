@@ -1,7 +1,6 @@
 /* mdObj refers to an object declared in the corresponding HTML file that 
 defines various viewer attributes for a given resource */
 var l = window.mdObj;
-
 var bcViewer = Mirador({
   "id": "viewer",
   "mainMenuSettings": {
@@ -32,7 +31,7 @@ $(document).on('click', '#dl-link', function() {
     var mirWindow = slot.window;
     var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
         focusType = mirWindow.currentImageMode,
-        canvasUriBase = 'https://scenery.bc.edu/',
+        canvasUriBase = 'http://scenery.bc.edu/',
         canvasUriSuffix = '/full/full/0/default.jpg',
         canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix;
 
