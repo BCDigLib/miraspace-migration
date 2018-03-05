@@ -21,7 +21,20 @@ var bcViewer = Mirador({
   "windowObjects": l.MIRADOR_WOBJECTS
 });
 
-$(document).on('click', '#dl-link', function() {
+function xhrProcessor(canvasUri, a, filename) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', canvasUri, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function(e) {
+      file = new Blob([xhr.response], { type : 'application/octet-stream' });
+      a.href = window.URL.createObjectURL(file);
+      a.download = filename;
+      a.click;
+  };
+  xhr.send();
+}
+
+function downloadImg() {
   var slot = null;
   if (bcViewer.viewer.workspace.slots.length == 1) {
     slot = bcViewer.viewer.workspace.slots[0];
@@ -35,19 +48,12 @@ $(document).on('click', '#dl-link', function() {
       canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix,
       filename = imgId + '.jpg';
   var a = document.getElementById("dl-link");
-  var xhr = new XMLHttpRequest();
 
-  xhr.open('GET', canvasUri, true);
-  xhr.responseType = 'blob';
-  xhr.onload = function () {
-      file = new Blob([xhr.response], { type : 'application/octet-stream' });
-      a.href = window.URL.createObjectURL(file);
-      a.download = filename;
-      a.click;
-  };
-  xhr.send();
-});
+  xhrProcessor(canvasUri, a, filename);
+}
 
-window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
+$(window).on('load', downloadImg);
+
+window.addEventListener('contextmenu', function(e) { // Not compatible with IE < 9
   e.preventDefault();
 }, false);
