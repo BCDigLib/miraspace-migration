@@ -30,13 +30,22 @@ $(document).on('click', '#dl-link', function() {
   }
   var mirWindow = slot.window;
   var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
-      filename = imgId + '.jpg',
       canvasUriBase = 'http://scenery.bc.edu/',
       canvasUriSuffix = '/full/full/0/default.jpg',
-      canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix;
+      canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix,
+      filename = imgId + '.jpg';
   var a = document.getElementById("dl-link");
-  a.href = canvasUri;
-  a.download = filename;
+  var xhr = new XMLHttpRequest();
+
+  xhr.open('GET', canvasUri, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function () {
+      file = new Blob([xhr.response], { type : 'application/octet-stream' });
+      a.href = window.URL.createObjectURL(file);
+      a.download = filename;
+      a.click;
+  };
+  xhr.send();
 });
 
 window.addEventListener('contextmenu', function (e) { // Not compatible with IE < 9
