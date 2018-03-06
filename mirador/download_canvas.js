@@ -21,8 +21,21 @@ var bcViewer = Mirador({
   "windowObjects": l.MIRADOR_WOBJECTS
 });
 
-function xhrProcessor(canvasUri, a, filename) {
-  var xhr = new XMLHttpRequest();
+function xhrProcessor() {
+  if (bcViewer.viewer.workspace.slots.length == 1) {
+    var slot = bcViewer.viewer.workspace.slots[0];
+  } else {
+    // TODO: handle multiple slots
+  }
+  var mirWindow = slot.window;
+  var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
+      canvasUriBase = 'http://scenery.bc.edu/',
+      canvasUriSuffix = '/full/full/0/default.jpg',
+      canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix,
+      filename = imgId + '.jpg';
+
+  var xhr = new XMLHttpRequest(),
+        a = document.getElementById("dl-link"), file;
   xhr.open('GET', canvasUri, true);
   xhr.responseType = 'blob';
   xhr.onload = function(e) {
@@ -34,25 +47,7 @@ function xhrProcessor(canvasUri, a, filename) {
   xhr.send();
 }
 
-function downloadImg() {
-  var slot = null;
-  if (bcViewer.viewer.workspace.slots.length == 1) {
-    slot = bcViewer.viewer.workspace.slots[0];
-  } else {
-    // TODO: handle multiple slots
-  }
-  var mirWindow = slot.window;
-  var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
-      canvasUriBase = 'http://scenery.bc.edu/',
-      canvasUriSuffix = '/full/full/0/default.jpg',
-      canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix,
-      filename = imgId + '.jpg';
-  var a = document.getElementById("dl-link");
-
-  xhrProcessor(canvasUri, a, filename);
-}
-
-$(window).on('load', downloadImg);
+$(document).on("click", xhrProcessor);
 
 window.addEventListener('contextmenu', function(e) { // Not compatible with IE < 9
   e.preventDefault();
