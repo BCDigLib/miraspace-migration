@@ -1,3 +1,5 @@
+// TODO: make this work with non-Chrome browsers
+
 /* mdObj refers to an object declared in the corresponding HTML file that 
 defines various viewer attributes for a given resource */
 var l = window.mdObj;
@@ -21,6 +23,8 @@ var bcViewer = Mirador({
   "windowObjects": l.MIRADOR_WOBJECTS
 });
 
+/* Sends an XHR to Loris to load the current canvas as a blob, updates the 
+"Download Current Image" link, then clicks it */
 function xhrProcessor() {
   if (bcViewer.viewer.workspace.slots.length == 1) {
     var slot = bcViewer.viewer.workspace.slots[0];
@@ -48,17 +52,23 @@ function xhrProcessor() {
 }
 
 $(document).ready(function() {
+  // New XHR when the window loads, so users don't have to click the link twice
   $(window).on("load", function() {
     xhrProcessor();
   });
+  // New XHR whenever we click a new thumbnail
   $(document).on("click", ".highlight", function() {
     xhrProcessor();
   });
+  /* New XHR whenever we click a link on the sidebar
+  Note: event propagation the .toc-link class must be enabled (see line 39671 
+  in mirador.js */
   $(document).on("click", ".toc-link", function() {
     xhrProcessor();
   });
 });
 
+// Disable right-click context menu
 window.addEventListener('contextmenu', function(e) { // Not compatible with IE < 9
   e.preventDefault();
 }, false);
