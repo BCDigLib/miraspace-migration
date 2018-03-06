@@ -47,7 +47,17 @@ function xhrProcessor() {
   xhr.send();
 }
 
-$(document).on("click", xhrProcessor);
+$(document).ready(function() {
+  $(window).on("load", function() {
+    xhrProcessor();
+  });
+  $(document).on("click", ".highlight", function() {
+    xhrProcessor();
+  });
+  $(document).on("click", ".toc-link", function() {
+    xhrProcessor();
+  });
+});
 
 window.addEventListener('contextmenu', function(e) { // Not compatible with IE < 9
   e.preventDefault();
