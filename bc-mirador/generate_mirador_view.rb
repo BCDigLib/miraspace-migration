@@ -33,36 +33,50 @@ def construct_mirador_object(file)
   manifest_hash = parse_manifest_file(file)
   handle = manifest_hash["metadata"][0]["handle"]
   manifest_uri = manifest_hash["@id"]
+  canvas_id = manifest_hash["sequences"][0]["canvases"][0]["@id"]
+  label = manifest_hash["label"]
 
-  @mirador_hash = {
-    "id": "viewer",
-    "mainMenuSettings": {
-      "buttons": {
-        "bookmark": false,
-        "fullScreenViewer": false
-      },
-      "userButtons": [{
-        "label": "View Library Record",
-        "iconClass": "fa fa-external-link",
-        "attributes": { "class": "handle", "href": handle, "target": "_blank" }
-      }],
-      "userLogo": {
-        "label": "Boston College Library",
-        "attributes": {
-          "id": "bc-logo",
-          "href": "https://library.bc.edu"
-        }
+  @mirador_data = [
+    {
+      "manifestUri": manifestUri,
+      "location": "Boston College",
+      "title": label
+    }
+  ]
+  @mirador_wobjects = [
+    {
+      "canvasID": canvas_id,
+      "loadedManifest": manifestUri,
+      "viewType": "ImageView"
+    }
+  ]
+  @mirador_buttons = [
+    {
+      "label": "View Library Record",
+      "iconClass": "fa fa-external-link",
+      "attributes": {
+        "class": "handle",
+        "href": handle,
+        "target": "_blank"
       }
     },
-    "data": [{ "manifestUri": manifest_uri, "location": "Boston College" }],
-    "windowObjects": [{ "loadedManifest": manifest_uri, "viewType": "ImageView" }]
-  }
+    {
+      "label": "Download Current Image",
+      "iconClass": "fa fa-download",
+      "attributes": {
+        "id": "dl-link",
+        "target": "_blank"
+      }
+    }
+  ]
 end
 
 def build_document(file)
   construct_mirador_object(file)
   identifier = File.basename(file, File.extname(file))
-  mirador = JSON.pretty_generate(@mirador_hash)
+  mdata = JSON.pretty_generate(@mirador_data)
+  wobjects = JSON.pretty_generate(@mirador_wobjects)
+  buttons = JSON.pretty_generate(@mirador_buttons)
   
   doc = <<-EOF
 <!DOCTYPE html>
@@ -75,15 +89,21 @@ def build_document(file)
   <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
   <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
   <script src="build/mirador/mirador.js"></script>
+  <script src="bc-mirador/jquery.ui-contextmenu.min.js"></script>
 </head>
 
 <body>
   <div id="viewer"></div>
+
   <script type="text/javascript">
-    $(function() {
-      Mirador(#{mirador});
-    });
+    window.mdObj = {
+      MIRADOR_DATA: #{mdata},
+      MIRADOR_WOBJECTS: #{wobjects},
+      MIRADOR_BUTTONS: #{buttons}
+    };
   </script>
+  <script type="text/javascript" src="bc-mirador/bc_viewer.js"></script>
+  <script type="text/javascript" src="bc-mirador/download_canvas.js"></script>
 </body>
 
 </html>
