@@ -88,13 +88,12 @@ def build_document(file)
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
   <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
-  <script src="build/mirador/mirador.js"></script>
-  <script src="bc-mirador/jquery.ui-contextmenu.min.js"></script>
+  <script type="text/javascript" src="build/mirador/mirador.js"></script>
+  <script type="text/javascript" src="bc-mirador/jquery.ui-contextmenu.min.js"></script>
 </head>
 
 <body>
   <div id="viewer"></div>
-
   <script type="text/javascript">
     window.mdObj = {
       MIRADOR_DATA: #{mdata},
