@@ -38,34 +38,34 @@ def construct_mirador_object(file)
 
   @mirador_data = [
     {
-      "manifestUri": manifestUri,
-      "location": "Boston College",
-      "title": label
+      manifestUri: manifest_uri,
+      location: "Boston College",
+      title: label
     }
   ]
   @mirador_wobjects = [
     {
-      "canvasID": canvas_id,
-      "loadedManifest": manifestUri,
-      "viewType": "ImageView"
+      canvasID: canvas_id,
+      loadedManifest: manifest_uri,
+      viewType: "ImageView"
     }
   ]
   @mirador_buttons = [
     {
-      "label": "View Library Record",
-      "iconClass": "fa fa-external-link",
-      "attributes": {
-        "class": "handle",
-        "href": handle,
-        "target": "_blank"
+      label: "View Library Record",
+      iconClass: "fa fa-external-link",
+      attributes: {
+        class: "handle",
+        href: handle,
+        target: "_blank"
       }
     },
     {
-      "label": "Download Current Image",
-      "iconClass": "fa fa-download",
-      "attributes": {
-        "id": "dl-link",
-        "target": "_blank"
+      label: "Download Current Image",
+      iconClass: "fa fa-download",
+      attributes: {
+        id: "dl-link",
+        target: "_blank"
       }
     }
   ]
