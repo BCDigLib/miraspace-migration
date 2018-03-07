@@ -1,30 +1,31 @@
-// TODO: make this work with non-Chrome browsers
+// Check if client browser is Chrome
+function isChrome() {
+  var isChromium = window.chrome,
+    winNav = window.navigator,
+    vendorName = winNav.vendor,
+    isOpera = winNav.userAgent.indexOf("OPR") > -1,
+    isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+    isIOSChrome = winNav.userAgent.match("CriOS");
 
-/* mdObj refers to an object declared in the corresponding HTML file that 
-defines various viewer attributes for a given resource */
-var l = window.mdObj;
-var bcViewer = Mirador({
-  "id": "viewer",
-  "mainMenuSettings": {
-    "buttons": {
-      "bookmark": false,
-      "fullScreenViewer": false
-    },
-    "userButtons": l.MIRADOR_BUTTONS,
-    "userLogo": {
-      "label": "Boston College Library",
-      "attributes": {
-        "id": "bc-logo",
-        "href": "https://library.bc.edu"
-      }
-    }
-  },
-  "data": l.MIRADOR_DATA,
-  "windowObjects": l.MIRADOR_WOBJECTS
-});
+  if (isIOSChrome) {
+    return true;
+  } else if (
+    isChromium !== null &&
+    typeof isChromium !== "undefined" &&
+    vendorName === "Google Inc." &&
+    isOpera === false &&
+    isIEedge === false
+  ) {
+    return true;
+  } else { 
+    return false;
+  }
+}
 
-/* Sends an XHR to Loris to load the current canvas as a blob, updates the 
-"Download Current Image" link, then clicks it */
+
+/* Sends an XHR to Loris to load the current canvas as a blob and updates the 
+ * "Download Current Image" link to point to it in a download attribute 
+ */
 function xhrProcessor() {
   if (bcViewer.viewer.workspace.slots.length == 1) {
     var slot = bcViewer.viewer.workspace.slots[0];
@@ -53,16 +54,17 @@ function xhrProcessor() {
 
 $(document).ready(function() {
   // New XHR when the window loads, so users don't have to click the link twice
-  $(window).on("load", function() {
+  $(window).load(function() {
     xhrProcessor();
   });
-  // New XHR whenever we click a new thumbnail
+  // New XHR whenever we click a thumbnail
   $(document).on("click", ".highlight", function() {
     xhrProcessor();
   });
   /* New XHR whenever we click a link on the sidebar
-  Note: event propagation the .toc-link class must be enabled (see line 39671 
-  in mirador.js */
+   * Note: event propagation the .toc-link class must be enabled (see line 39671 
+   * in mirador.js)
+   */
   $(document).on("click", ".toc-link", function() {
     xhrProcessor();
   });
