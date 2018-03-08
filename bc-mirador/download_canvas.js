@@ -52,6 +52,24 @@ function xhrProcessor() {
   xhr.send();
 }
 
+/* Non-Chrome browser support for xhrProcessor() is iffy, so for other browsers 
+ * we'll just link to the image on Loris for now
+ */
+function linkToCanvas() {
+  if (bcViewer.viewer.workspace.slots.length == 1) {
+    slot = bcViewer.viewer.workspace.slots[0];
+  } else {
+    // TODO: handle multiple slots
+  }
+  var mirWindow = slot.window;
+  var imgId = mirWindow.focusModules.ImageView.currentImg["label"],
+      canvasUriBase = 'http://scenery.bc.edu/',
+      canvasUriSuffix = '/full/full/0/default.jpg',
+      canvasUri = canvasUriBase + imgId + '.jp2' + canvasUriSuffix;
+  var a = document.getElementById("dl-link");
+  a.href = canvasUri;
+}
+
 $(document).ready(function() {
   if (isChrome() == true) {
     // New XHR when the window loads, so users don't have to click the link twice
@@ -70,7 +88,9 @@ $(document).ready(function() {
       xhrProcessor();
     });
   } else {
-    // Link to image in Loris instead
+    $(document).on('click', '#dl-link', function() {
+      linkToCanvas();
+    });
   }
 });
 
