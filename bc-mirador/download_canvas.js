@@ -53,21 +53,25 @@ function xhrProcessor() {
 }
 
 $(document).ready(function() {
-  // New XHR when the window loads, so users don't have to click the link twice
-  $(window).load(function() {
-    xhrProcessor();
-  });
-  // New XHR whenever we click a thumbnail
-  $(document).on("click", ".highlight", function() {
-    xhrProcessor();
-  });
-  /* New XHR whenever we click a link on the sidebar
-   * Note: event propagation the .toc-link class must be enabled (see line 39671 
-   * in mirador.js)
-   */
-  $(document).on("click", ".toc-link", function() {
-    xhrProcessor();
-  });
+  if (isChrome() == true) {
+    // New XHR when the window loads, so users don't have to click the link twice
+    $(window).load(function() {
+      xhrProcessor();
+    });
+    // New XHR whenever we click a thumbnail
+    $(document).on("click", ".highlight", function() {
+      xhrProcessor();
+    });
+    /* New XHR whenever we click a link on the sidebar
+     * Note: event propagation the .toc-link class must be enabled (see line 39671 
+     * in mirador.js)
+     */
+    $(document).on("click", ".toc-link", function() {
+      xhrProcessor();
+    });
+  } else {
+    // Link to image in Loris instead
+  }
 });
 
 // Disable right-click context menu
