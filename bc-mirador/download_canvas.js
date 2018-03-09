@@ -57,7 +57,7 @@ function xhrProcessor() {
  */
 function linkToCanvas() {
   if (bcViewer.viewer.workspace.slots.length == 1) {
-    slot = bcViewer.viewer.workspace.slots[0];
+    var slot = bcViewer.viewer.workspace.slots[0];
   } else {
     // TODO: handle multiple slots
   }
