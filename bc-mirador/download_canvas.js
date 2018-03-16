@@ -46,6 +46,7 @@ function xhrProcessor() {
   xhr.onload = function(e) {
       file = new Blob([xhr.response], { type : 'application/octet-stream' });
       a.href = window.URL.createObjectURL(file);
+      a.target = "_self";
       a.download = filename;
       a.click;
   };
