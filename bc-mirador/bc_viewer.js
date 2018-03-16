@@ -6,7 +6,8 @@ var bcViewer = Mirador({
   "mainMenuSettings": {
     "buttons": {
       "bookmark": false,
-      "fullScreenViewer": false
+      "fullScreenViewer": false,
+      "layout": false
     },
     "userButtons": l.MIRADOR_BUTTONS,
     "userLogo": {
@@ -21,3 +22,10 @@ var bcViewer = Mirador({
   "data": l.MIRADOR_DATA,
   "windowObjects": l.MIRADOR_WOBJECTS
 });
+
+var mobileMenu = setTimeout(function(){
+  $('.user-buttons').slicknav({
+    label: 'Menu',
+    prependTo: '.mirador-main-menu-bar'
+  });
+}, 100);
