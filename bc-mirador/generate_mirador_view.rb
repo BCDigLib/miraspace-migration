@@ -86,11 +86,11 @@ def build_document(file)
   <title>#{identifier}</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-combined.css"></link>
-  <link rel="stylesheet" type="text/css" href="build/mirador/css/mirador-bc.css"></link>
-  <link rel="stylesheet" type="text/css" href="bc-mirador/slicknav.css"></link>
-  <script type="text/javascript" src="build/mirador/mirador.js"></script>
-  <script type="text/javascript" src="bc-mirador/jquery.slicknav.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/iiif/build/mirador/css/mirador-combined.css"></link>
+  <link rel="stylesheet" type="text/css" href="/iiif/build/mirador/css/mirador-bc.css"></link>
+  <link rel="stylesheet" type="text/css" href="/iiif/bc-mirador/slicknav.css"></link>
+  <script type="text/javascript" src="/iiif/build/mirador/mirador.js"></script>
+  <script type="text/javascript" src="/iiif/bc-mirador/jquery.slicknav.min.js"></script>
 </head>
 
 <body>
@@ -102,8 +102,8 @@ def build_document(file)
       MIRADOR_BUTTONS: #{buttons}
     };
   </script>
-  <script type="text/javascript" src="bc-mirador/bc_viewer.js"></script>
-  <script type="text/javascript" src="bc-mirador/download_canvas.js"></script>
+  <script type="text/javascript" src="/iiif/bc-mirador/bc_viewer.js"></script>
+  <script type="text/javascript" src="/iiif/bc-mirador/download_canvas.js"></script>
 </body>
 
 </html>
