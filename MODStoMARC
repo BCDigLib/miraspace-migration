@@ -1,0 +1,3 @@
+This xslt transforms Digitool MODS to MARC.  In addition to working with the MODS, the stylesheet requires a few additional data elements from the Digital Entity record.  
+
+The extra elements from the Digitool Entity (such as handle, count of digital surrogates, etc) are added to mods:extension using a stylesheet that is executed along side the API
