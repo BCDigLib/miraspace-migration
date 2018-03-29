@@ -1,3 +1,0 @@
-Modified version of LC stylesheet.
-
-Convert MODS obtained using Digitool API and modified using an xslt that pulls several non-mods elements into mods:extension
