@@ -1,0 +1,3 @@
+[submodule "MODStoMARC"]
+	path = MODStoMARC
+	url = https://github.com/BCDigLib/MODStoMARC
