@@ -26,7 +26,8 @@ output_xml = "modded_solr_#{input_txt_rel}.xml"
 tsv = CSV.readlines(input_txt, :col_sep => "\t")
 solr_xml = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
-File.write(output_xml, "<add>")
+File.write(output_xml, '<?xml version="1.0" encoding="utf-8"?>')
+File.write(output_xml, '<add>')
 
 tsv.each do |line|
   doc = solr_xml.at("doc:has(field[text()='https://bclsco.bc.edu/catalog/oai:dcollections.bc.edu:#{line[0]}'])")
@@ -44,4 +45,4 @@ tsv.each do |line|
   File.write(output_xml, doc.to_xml, mode: 'a')
 end
 
-File.write(output_xml, "</add>", mode: 'a')
+File.write(output_xml, '</add>', mode: 'a')
