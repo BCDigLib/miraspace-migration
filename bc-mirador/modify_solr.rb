@@ -3,14 +3,29 @@ require 'nokogiri'
 require 'pathname'
 
 input_txt = ARGV[0]
-tsv = CSV.readlines("commencement-bc1988027marc.txt", :col_sep => "\t")
+input_xml = ARGV[1]
+output_xml = "modded_solr_#{input_txt}.xml"
 
-input_xml = 'solr-xml/all_solr.xml'
-output_xml = 'modded_solr.xml'
+if ARGV.empty? || ARGV.lengh == 1
+  puts "Error: not enough arguments supplied"
+  puts "Usage: ruby modify_solr.rb input_txt_file input_solr_xml_file"
+  exit
+elsif ARGV.length > 2
+  puts "Error: takes only two arguments"
+  puts "Usage: ruby modify_solr.rb input_txt_file input_solr_xml_file"
+  exit
+elsif !Pathname(input_txt).exist?
+  puts "Error: could not find #{input_txt}"
+  exit
+elsif !Pathname(input_xml).exist?
+  puts "Error: could not find #{input_xml}"
+  exit
+end
 
-solr_xml = File.open(input_file) { |f| Nokogiri::XML(f) }
+tsv = CSV.readlines(input_txt, :col_sep => "\t")
+solr_xml = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
-File.write(output_file, "<add>")
+File.write(output_xml, "<add>")
 
 tsv.each do |line|
   doc = solr_xml.at("doc:has(field[text()='https://bclsco.bc.edu/catalog/oai:dcollections.bc.edu:#{line[0]}'])")
@@ -25,7 +40,7 @@ tsv.each do |line|
   raw_obj_mt.content = line[1]
   raw_obj_ms.content = line[1]
 
-  File.write(output_file, doc.to_xml, mode: 'a')
+  File.write(output_xml, doc.to_xml, mode: 'a')
 end
 
-File.write(output_file, "</add>", mode: 'a')
+File.write(output_xml, "</add>", mode: 'a')
