@@ -26,7 +26,7 @@ output_xml = "modded_solr_#{input_txt_rel}.xml"
 tsv = CSV.readlines(input_txt, :col_sep => "\t")
 solr_xml = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
-File.write(output_xml, '<?xml version="1.0" encoding="utf-8"?>')
+File.write(output_xml, Nokogiri::XML::Builder.new)
 File.write(output_xml, '<add>')
 
 tsv.each do |line|
