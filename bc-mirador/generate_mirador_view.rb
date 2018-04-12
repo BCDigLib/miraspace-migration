@@ -59,14 +59,6 @@ def construct_mirador_object(file)
         href: handle,
         target: "_blank"
       }
-    },
-    {
-      label: "Download Current Image",
-      iconClass: "fa fa-download",
-      attributes: {
-        id: "dl-link",
-        target: "_blank"
-      }
     }
   ]
 end
@@ -103,7 +95,6 @@ def build_document(file)
     };
   </script>
   <script type="text/javascript" src="/iiif/bc-mirador/bc_viewer.js"></script>
-  <script type="text/javascript" src="/iiif/bc-mirador/download_canvas.js"></script>
 </body>
 
 </html>
