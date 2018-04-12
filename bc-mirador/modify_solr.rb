@@ -4,9 +4,8 @@ require 'pathname'
 
 input_txt = ARGV[0]
 input_xml = ARGV[1]
-output_xml = "modded_solr_#{input_txt}.xml"
 
-if ARGV.empty? || ARGV.lengh == 1
+if ARGV.empty? || ARGV.length == 1
   puts "Error: not enough arguments supplied"
   puts "Usage: ruby modify_solr.rb input_txt_file input_solr_xml_file"
   exit
@@ -22,6 +21,8 @@ elsif !Pathname(input_xml).exist?
   exit
 end
 
+input_txt_rel = File.basename(input_txt.split('/').last.to_s, ".txt")
+output_xml = "modded_solr_#{input_txt_rel}.xml"
 tsv = CSV.readlines(input_txt, :col_sep => "\t")
 solr_xml = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
