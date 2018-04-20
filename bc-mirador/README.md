@@ -1,12 +1,7 @@
 ## Mirador Utilities and Stylesheets
 #### generate_mirador_view.rb
-Takes a IIIF manifest as input and outputs an HTML landing page for Mirador.
-
-As currently written, this script creates one page per manifest. We are testing 
-this method as an alternative to the Bavarian State Library's 
-[Bookmarkable Viewer State plugin](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state) 
-(see ['Linking to thumbnails, manifests, and canvases'](#linking-to-thumbnails-manifests-and-canvases)
-for more information).
+Takes a IIIF manifest as input and outputs an HTML landing page that instantiates 
+Mirador. As currently written, this script creates one page per manifest.
 
 Usage:
 
@@ -48,6 +43,10 @@ manifest_id is the handle suffix/resource ID:
 
 Manifests can also be viewed and downloaded as JSON:
 `https://library.bc.edu/iiif/manifests/manifest_id.json`
+
+It is not currently possible to link to an individual canvas. We are considering 
+using the Bavarian State Library's [ViewFromUrl plugin](https://github.com/dbmdz/mirador-plugins/tree/master/ViewFromUrl) 
+to implement this functionality on a case by case basis.
 
 #### Generating manifests
 [metsiiif](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem that converts 
