@@ -26,7 +26,7 @@ for manifest in ./commencement-photos/manifests/*.json; do ruby generate_mirador
 
 3. Copy the output file(s) to the Mirador server. You should now be able to view 
 a manifest in Mirador using its ArchivesSpace identifier in the URI, e.g.: 
-`http://mirador_server.bc.edu/iiif/BC1988_027_ref57`
+`https://library.bc.edu/iiif/view/BC1988_027_ref57`
 
 #### mirador-bc.css
 Includes local customizations to Mirador's appearance. This stylesheet should be 
@@ -40,23 +40,14 @@ canvas at full resolution.
 #### Linking to thumbnails, manifests, and canvases
 To request a thumbnail, use the syntax provided by the [IIIF Image API](http://iiif.io/api/image/2.1/#image-request-uri-syntax). 
 The parameters can be adjusted as needed. E.g., to request a 200x200 thumbnail: 
-`http://loris_server.bc.edu/image_id.jp2/full/!200,200/0/default.jpg`
+`https://scenery.bc.edu/image_id.jp2/full/!200,200/0/default.jpg`
 
-We use a Bavarian State Library Mirador plugin called [Bookmarkable Viewer State](https://github.com/dbmdz/mirador-plugins#bookmarkable-viewer-state) 
-to link directly to manifests and canvases. Links should be constructed using query 
-string syntax, e.g.: 
+Manifests can be rendered in Mirador using the following formula, where 
+manifest_id is the handle suffix/resource ID:
+`https://library.bc.edu/iiif/view/manifest_id`
 
-```
-http://mirador_server.bc.edu/iiif/?view=ImageView&manifest=https://library.bc.edu/path_to_manifest.json&canvas=http://loris_server.bc.edu/canvas_id/page_id
-```
-
-In the example above, the canvas parameter is optional. The view parameter can be 
-set to any of the following:
-
-* ImageView (preferred): loads specified canvas (defaults to first in sequence) 
-with other canvases listed below 
-* BookView: loads two canvases in the viewer at once
-* ThumbnailsView: lists all canvases in a gallery view
+Manifests can also be viewed and downloaded as JSON:
+`https://library.bc.edu/iiif/manifests/manifest_id.json`
 
 #### Generating manifests
 [metsiiif](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem that converts 
