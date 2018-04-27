@@ -1,3 +1,5 @@
+# TODO: figure out what to for collections with tricky image IDs (e.g., Hanvey)
+
 require 'csv'
 require 'nokogiri'
 require 'pathname'
@@ -28,7 +30,7 @@ doc.xpath('//mods:mods', 'oai' => 'http://www.openarchives.org/OAI/2.0', 'mods' 
 end
 
 input_xml_rel = File.basename(input_xml.split('/').last.to_s, ".xml")
-output_xml = "modded_oai_#{input_xml_rel}.xml"
+output_xml = "#{input_xml_rel}_modded.xml"
 file = File.new(output_xml, "wb")
 file.write(doc)
 file.close
