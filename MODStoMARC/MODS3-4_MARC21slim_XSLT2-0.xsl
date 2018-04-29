@@ -41,8 +41,8 @@
 
 	<xsl:template match="mods:typeOfResource" mode="leader">
 		<xsl:choose>
-			<xsl:when test="text()='text'">a</xsl:when>
 			<xsl:when test="text()='text' and @manuscript='yes'">t</xsl:when>
+			<xsl:when test="text()='text'">a</xsl:when>
 			<xsl:when test="text()='cartographic' and @manuscript='yes'">f</xsl:when>
 			<xsl:when test="text()='cartographic'">e</xsl:when>
 			<xsl:when test="text()='notated music' and @manuscript='yes'">d</xsl:when>
@@ -553,7 +553,7 @@
 					<marc:subfield code="t">
 						<!--<xsl:value-of select="mods:extension/thumbnail"/>-->
 						<xsl:value-of
-							select="substring-after(substring-before($varFilenameLookup/dataroot/EXIF[child::PID=$varPID]/FileName, '_jpg' ),'_')"/>
+							select="substring-after(substring-before($varFilenameLookup/dataroot/EXIF[child::PID=$varPID]/FileName, '_jp' ),'_')"/>
 					</marc:subfield>
 					<marc:subfield code="r">
 						<xsl:value-of select="mods:recordInfo/mods:recordOrigin"/>
@@ -2149,9 +2149,9 @@
 				<marc:subfield code="3">				
 					<xsl:value-of select="digital_surrogates"/>
 					<xsl:text> image</xsl:text>
-				<!--	<xsl:if test="digital_surrogates &gt; 1">
+					<xsl:if test="digital_surrogates &gt; 1">
 						<xsl:text>s</xsl:text>
-					</xsl:if>-->
+					</xsl:if>
 					<!--<xsl:value-of select="replace(replace(replace(..//mods:physicalDescription/mods:extent,'1 file \(',''), '1 item ',''),'digital surrogate', 'image')"/>-->
 				</marc:subfield>
 			<!--	<marc:subfield code="u">
@@ -2178,9 +2178,9 @@
 					<xsl:text>View online resource (</xsl:text>
 					<xsl:value-of select="digital_surrogates"/>
 					<xsl:text> image</xsl:text>
-				<!--	<xsl:if test="digital_surrogates &gt; 1">
+				<xsl:if test="digital_surrogates &gt; 1">
 						<xsl:text>s</xsl:text>
-					</xsl:if>-->
+					</xsl:if>
 					<xsl:text>)</xsl:text>
 				</marc:subfield>
 				
@@ -2369,7 +2369,7 @@
 					</marc:subfield>
 				</xsl:for-each>
 				<!-- v3 sici part/detail 773$q 	1:2:3<4-->			
-				<xsl:if test="mods:part/mods:detail">
+			<!--	<xsl:if test="mods:part/mods:detail">
 					<xsl:variable name="parts">				
 						<xsl:for-each select="mods:part/mods:detail">
 							<xsl:value-of select="concat(mods:number,':')"/>
@@ -2378,7 +2378,7 @@
 					<marc:subfield code="q">						
 						<xsl:value-of select="concat(substring($parts,1,string-length($parts)-1),'&lt;',mods:part/mods:extent/mods:start)"/>
 					</marc:subfield>
-				</xsl:if>
+				</xsl:if>-->
 				<xsl:call-template name="relatedItem76X-78X"/>
 			</xsl:with-param>		
 		</xsl:call-template>
