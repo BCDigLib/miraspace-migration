@@ -325,7 +325,7 @@
 						<xsl:value-of select="mods:originInfo/mods:dateCreated[@point='end']"/>
 					</xsl:when>					
 					<xsl:otherwise>
-						<xsl:text>help</xsl:text>
+						<xsl:text>####</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<!-- 15-17 -->	
@@ -1042,6 +1042,7 @@
 				<xsl:for-each select="mods:dateCreated[not(@*)]">
 					<marc:subfield code='c'>
 						<xsl:value-of select="."/>
+						<xsl:text>.</xsl:text>
 					</marc:subfield>
 				</xsl:for-each>
 			</xsl:with-param>
@@ -1306,7 +1307,14 @@
 			</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<marc:subfield code='a'>
-					<xsl:value-of select="."/>
+					<xsl:choose>				
+					<xsl:when test="contains(.,'Dimensions of Original')">
+						<xsl:value-of select="concat(replace(.,'Original', 'original'),'.')"></xsl:value-of>
+					</xsl:when>
+						<xsl:otherwise>
+						<xsl:value-of select="."></xsl:value-of>
+						</xsl:otherwise>
+					</xsl:choose>
 				</marc:subfield>
 				<!-- 1/04 fix: 856$u instead -->
 				<!--<xsl:for-each select="@xlink:href">
@@ -1648,6 +1656,7 @@
 		<xsl:for-each select="mods:title">
 			<marc:subfield code="a">
 				<xsl:value-of select="../mods:nonSort"/><xsl:value-of select="."/>
+				<xsl:text>.</xsl:text>
 			</marc:subfield>
 		</xsl:for-each>
 		<!-- 1/04 fix -->
@@ -2388,7 +2397,8 @@
 			<xsl:with-param name="ind2">2</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<marc:subfield code="3">
-					<xsl:text>Link to finding aid for entire collection</xsl:text>
+					<xsl:text>About the </xsl:text>
+					<xsl:value-of select="mods:titleInfo/mods:title"></xsl:value-of>
 					
 				
 				</marc:subfield>
@@ -2460,7 +2470,17 @@
 					<xsl:value-of select="."/>
 				</marc:subfield>
 			</xsl:for-each>	
+
 		</xsl:for-each>		
+		
+		<!--BC Custom, subseries-->
+		<xsl:for-each select="mods:part/mods:detail">
+			
+			<xsl:if test="mods:caption"></xsl:if>
+			<marc:subfield code="g">
+				<xsl:value-of select="."/>
+			</marc:subfield>
+		</xsl:for-each>	
 		<!--BC Custom, add dates subfield-->
 		<marc:subfield code="d">
 			<xsl:value-of select="mods:originInfo/mods:dateCreated[not(@*)]"/>
