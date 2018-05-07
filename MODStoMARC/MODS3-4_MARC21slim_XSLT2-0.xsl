@@ -551,7 +551,7 @@
 					<xsl:when test="$typeOf008='BK'">
 						<xsl:choose>
 							<xsl:when test="mods:genre[@authority='marc']='biography'">d</xsl:when>
-							<xsl:otherwise>#</xsl:otherwise>
+							<xsl:otherwise>|</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
 					<xsl:when test="$typeOf008='VM'">
@@ -593,9 +593,12 @@
 					<marc:subfield code="c">
 						<xsl:value-of select="mods:extension/digital_surrogates"/>
 					</marc:subfield>
-					<marc:subfield code="l">
+				<marc:subfield code="l">
 						<xsl:text>ead:c@LEVEL=</xsl:text>
 						<xsl:choose>
+							<xsl:when test="contains(mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+								<xsl:text>file</xsl:text>
+							</xsl:when>
 							<xsl:when test="contains(mods:physicalDescription/mods:extent, 'item')">
 								<xsl:text>item</xsl:text>
 							</xsl:when>
@@ -2331,11 +2334,11 @@
 
 				<marc:subfield code="q">
 					<xsl:choose>
-						<xsl:when test="contains(../mods:physicalDescription/mods:internetMediaType, ',')">
-							<xsl:value-of select="substring-before(../mods:physicalDescription/mods:internetMediaType, ',')"/>
+						<xsl:when test="contains(../mods:physicalDescription/mods:internetMediaType[1], ',')">
+							<xsl:value-of select="substring-before(../mods:physicalDescription/mods:internetMediaType[1], ',')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="../mods:physicalDescription/mods:internetMediaType"/>
+							<xsl:value-of select="../mods:physicalDescription/mods:internetMediaType[1]"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</marc:subfield>
