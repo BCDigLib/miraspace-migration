@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Execute from digital_entities directory
+source ~/.bashrc
+for file in *.xml; do saxon -s:$file -xsl:/Volumes/digital-library/current-projects/Miraspace-migration/scripts/legacyDEtoMETS.xsl -o:mets_transformed/$file; done
+for file in mets_transformed/*.xml; do saxon -s:$file -xsl:/Volumes/digital-library/current-projects/Miraspace-migration/scripts/step2.xsl -o:$file; done
