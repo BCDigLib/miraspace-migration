@@ -396,6 +396,9 @@
 							<xsl:otherwise>|</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
+					<xsl:when test="$typeOf008='VM'">
+						<xsl:text>#</xsl:text>
+					</xsl:when>
 					<xsl:otherwise></xsl:otherwise>
 				</xsl:choose>
 				<!-- 22 -->
@@ -441,7 +444,7 @@
 						<xsl:text>|</xsl:text>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:text>####</xsl:text>
+						<xsl:text>#####</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<!-- 28 -->
