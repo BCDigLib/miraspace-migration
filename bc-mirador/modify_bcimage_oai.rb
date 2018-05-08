@@ -24,7 +24,7 @@ end
 manifest = JSON.parse(File.read(input_json))
 manifest_component_unique_id = manifest['@id'].split('/').last.gsub('.json', '')
 manifest_thumb_id = manifest['thumbnail']
-manifest_handle_suffix = manifest["metadata"][0]["handle"].split('/').last
+manifest_hdl_suffix = manifest["metadata"][0]["handle"].split('/').last
 
 doc = File.open(input_xml) { |f| Nokogiri::XML(f) }
 doc.xpath('//mods:mods', 'oai' => 'http://www.openarchives.org/OAI/2.0', 'mods' => 'http://www.loc.gov/mods/v3').each do |node|
@@ -32,7 +32,7 @@ doc.xpath('//mods:mods', 'oai' => 'http://www.openarchives.org/OAI/2.0', 'mods' 
   oai_raw_obj = node.at_xpath('mods:location/mods:url[@access="raw object"]', 'mods' => 'http://www.loc.gov/mods/v3')
   oai_thumb = node.at_xpath('mods:location/mods:url[@access="preview"]', 'mods' => 'http://www.loc.gov/mods/v3')
 
-  if oai_hdl_suffix = manifest_handle_suffix
+  if oai_hdl_suffix == manifest_hdl_suffix
     oai_raw_obj.content = "https://library.bc.edu/iiif/view/#{manifest_component_unique_id}"
     oai_thumb.content = manifest_thumb_id
   end
