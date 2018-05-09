@@ -1,5 +1,5 @@
 gem uninstall metsiiif
-cd ~/Google\ Drive/dvc/mets-to-iiif
+cd ~/drive/dvc/mets-to-iiif
 rm metsiiif-*.gem
 gem build metsiiif.gemspec
 gem install metsiiif-*.gem

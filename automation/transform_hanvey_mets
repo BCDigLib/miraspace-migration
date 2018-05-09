@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Execute from digital_entities directory
+# Execute from digital_entities directory. Saxon should alias to java -jar /path/to/saxon9he.jar 
 source ~/.bashrc
-for file in *.xml; do saxon -s:$file -xsl:/Volumes/digital-library/current-projects/Miraspace-migration/scripts/legacyDEtoMETS.xsl -o:mets_transformed/$file; done
-for file in mets_transformed/*.xml; do saxon -s:$file -xsl:/Volumes/digital-library/current-projects/Miraspace-migration/scripts/step2.xsl -o:$file; done
+for file in *.xml; do echo "Running first transform on $file"; saxon -s:$file -xsl:~/drive/dvc/miraspace-migration/image-and-metadata-extraction/legacy-xslts/legacyDEtoMETS.xsl -o:mets_transformed/$file; done
+for file in mets_transformed/*.xml; do echo "Running second transform on $file"; saxon -s:$file -xsl:~/drive/dvc/miraspace-migration/image-and-metadata-extraction/legacy-xslts/legacyDEtoMETS.xsl -o:$file; done
