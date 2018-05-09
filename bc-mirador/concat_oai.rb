@@ -2,6 +2,11 @@
 
 require 'nokogiri'
 
+if ARGV.empty?
+  puts "Usage: ruby concat_oai.rb path/to/oai_files/"
+  exit
+end
+
 oai_dir = ARGV[0]
 input_xml = Dir["#{oai_dir}/*"]
 first_file = input_xml.shift
@@ -22,6 +27,6 @@ end
 doc.xpath('//oai:ListRecords', 'oai' => 'http://www.openarchives.org/OAI/2.0/').remove
 doc.at_xpath('//oai:OAI-PMH', 'oai' => 'http://www.openarchives.org/OAI/2.0/').add_child(records)
 
-output = File.new('modded_oai_combined.xml', 'w')
+output = File.new('oai_combined.xml', 'w')
 output.write(doc)
 output.close
