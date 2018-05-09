@@ -10,6 +10,7 @@
 -->
 
 	<xsl:include href="http://www.loc.gov/marcxml/xslt/MARC21slimUtils.xsl"/>
+	<xsl:variable name="genrelookup" select="document('genreLookup.xml')"/> 
 
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
@@ -374,13 +375,14 @@
 				<!-- 18-21 - BK -->
 				<xsl:if test="$typeOf008='BK'">
 
-				<xsl:choose>
-					<xsl:when test="mods:relatedItem/mods:part/mods:detail[1]/mods:title[text()='Anansi Stories']">
+					<xsl:choose>
+						<xsl:when
+							test="mods:relatedItem/mods:part/mods:detail[1]/mods:title[text()='Anansi Stories']">
 
-						<xsl:text>ag||</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>||||</xsl:otherwise>
-				</xsl:choose>
+							<xsl:text>ag||</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>||||</xsl:otherwise>
+					</xsl:choose>
 				</xsl:if>
 
 				<!-- 21 -->
@@ -399,7 +401,7 @@
 					<xsl:when test="$typeOf008='VM'">
 						<xsl:text>#</xsl:text>
 					</xsl:when>
-					<xsl:otherwise></xsl:otherwise>
+					<xsl:otherwise/>
 				</xsl:choose>
 				<!-- 22 -->
 				<!-- 1/04 fix -->
@@ -413,7 +415,8 @@
 				<!-- 23 -->
 				<xsl:choose>
 					<xsl:when
-						test="$typeOf008='BK' or $typeOf008='MU' or $typeOf008='SE' or $typeOf008='MM'">o</xsl:when>
+						test="$typeOf008='BK' or $typeOf008='MU' or $typeOf008='SE' or $typeOf008='MM'"
+						>o</xsl:when>
 
 				</xsl:choose>
 				<!-- 24-27 -->
@@ -543,7 +546,9 @@
 							<xsl:when test="mods:genre[@authority='marc']='short story'"
 								>j</xsl:when>
 							<xsl:when test="mods:genre[@authority='marc']='speech'">s</xsl:when>
-							<xsl:when test="mods:relatedItem/mods:part/mods:detail[1]/mods:title[text()='Anansi Stories']">j</xsl:when>
+							<xsl:when
+								test="mods:relatedItem/mods:part/mods:detail[1]/mods:title[text()='Anansi Stories']"
+								>j</xsl:when>
 							<xsl:otherwise>|</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
@@ -596,10 +601,11 @@
 					<marc:subfield code="c">
 						<xsl:value-of select="mods:extension/digital_surrogates"/>
 					</marc:subfield>
-				<marc:subfield code="l">
+					<marc:subfield code="l">
 						<xsl:text>ead:c@LEVEL=</xsl:text>
 						<xsl:choose>
-							<xsl:when test="contains(mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+							<xsl:when
+								test="contains(mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
 								<xsl:text>file</xsl:text>
 							</xsl:when>
 							<xsl:when test="contains(mods:physicalDescription/mods:extent, 'item')">
@@ -642,7 +648,7 @@
 		<xsl:param name="ind1-245">
 			<!-- determine if title main entry-->
 			<xsl:choose>
-				<xsl:when test="ancestor::mods:mods/descendant::mods:roleTerm[text()='Creator']">
+				<xsl:when test="ancestor::mods:mods/descendant::mods:roleTerm[text()='pht' or text()='cre']/@type='code'">
 					<xsl:text>1</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
@@ -757,7 +763,7 @@
 	</xsl:template>
 	<!-- v3 role-->
 	<xsl:template
-		match="mods:name[@type='personal'][1][mods:role/mods:roleTerm[@type='code']='cre']">
+		match="mods:name[@type='personal'][1][mods:role/mods:roleTerm[@type='code']='cre' or 'pht']">
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">100</xsl:with-param>
 			<xsl:with-param name="ind1">1</xsl:with-param>
@@ -967,7 +973,7 @@
 	</xsl:template>
 
 	<!-- Genre elements -->
-	<xsl:template match="mods:genre[@authority!='marcgt' or not(@authority)]">
+	<xsl:template match="mods:genre[@authority!='marcgt' or not(@authority) or not(parent::mods:subject)]">
 		<xsl:variable name="dfv">
 			<xsl:choose>
 				<xsl:when test="@authority = 'content' and @type='musical composition'"
@@ -1250,11 +1256,26 @@
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">300</xsl:with-param>
 			<xsl:with-param name="subfields">
+				<xsl:choose>
+					<xsl:when test="not(contains(extent, 'file'))">
+						<marc:subfield code="a">
+							<xsl:text>1 online resource (</xsl:text>
+							<xsl:value-of
+								select="ancestor::mods:mods/mods:extension/digital_surrogates"
+							/>
+							<xsl:text> image</xsl:text>
+							<xsl:if test="ancestor::mods:mods/mods:extension/digital_surrogates &gt;1 ">s</xsl:if>
+							<xsl:text>)</xsl:text>
+						</marc:subfield>
+					</xsl:when>
+				<xsl:otherwise>
 				<marc:subfield code="a">
 					<xsl:value-of
 						select="replace(replace(replace(.,'file','online resource'), 'item','online resource'),'digital surrogate', 'image file')"
 					/>
 				</marc:subfield>
+				</xsl:otherwise>
+				</xsl:choose>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1464,9 +1485,18 @@
 				</xsl:choose>
 			</xsl:with-param>
 			<xsl:with-param name="subfields">
+				<xsl:choose>
+					<xsl:when test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+						<marc:subfield code="a">
+							<xsl:text>The Bobbie Hanvey Photographic Archives are licensed under a Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License.</xsl:text>
+						</marc:subfield>
+					</xsl:when>
+					<xsl:otherwise>
 				<marc:subfield code="a">
 					<xsl:value-of select="normalize-space(.)"/>
 				</marc:subfield>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1521,7 +1551,7 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="mods:subject[local-name(*[1])='topic']">
+	<xsl:template match="mods:subject[local-name(*[1])='topic' or local-name(*[1])='occupation']">
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">650</xsl:with-param>
 			<xsl:with-param name="ind1">1</xsl:with-param>
@@ -1529,7 +1559,24 @@
 				<marc:subfield code="a">
 					<xsl:value-of select="*[1]"/>
 				</marc:subfield>
-				<xsl:apply-templates select="*[position()>1]"/>
+				<xsl:for-each select="node()">
+					<xsl:choose>
+						<xsl:when test="local-name()='geographic'">
+							<marc:subfield code="z">
+								<xsl:value-of select="."/>
+							</marc:subfield>
+						</xsl:when>
+					</xsl:choose>
+					<xsl:choose>
+						<xsl:when test="local-name()='genre'">
+							<marc:subfield code="v">
+								<xsl:value-of select="."/>
+							</marc:subfield>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+				
+
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1559,12 +1606,12 @@
 					<xsl:call-template name="datafield">
 						<xsl:with-param name="tag">600</xsl:with-param>
 						<xsl:with-param name="ind1">1</xsl:with-param>
-						<xsl:with-param name="ind2">
-							<xsl:call-template name="authorityInd"/>
-						</xsl:with-param>
+						<xsl:with-param name="ind2">0</xsl:with-param>
 						<xsl:with-param name="subfields">
 							<marc:subfield code="a">
-								<xsl:value-of select="mods:namePart"/>
+								<xsl:value-of select="mods:namePart[@type='family']"/>
+								<xsl:text>, </xsl:text>
+								<xsl:value-of select="mods:namePart[@type='given']"/>
 							</marc:subfield>
 							<!-- v3 termsofAddress -->
 							<xsl:for-each select="mods:namePart[@type='termsOfAddress']">
@@ -1589,6 +1636,15 @@
 									<xsl:value-of select="."/>
 								</marc:subfield>
 							</xsl:for-each>
+							<xsl:for-each select="following-sibling::node()">
+								<xsl:choose>
+									<xsl:when test="local-name()='genre'">
+										<marc:subfield code="v">
+											<xsl:value-of select="."/>
+										</marc:subfield>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:for-each>
 							<xsl:apply-templates select="*[position()>1]"/>
 						</xsl:with-param>
 					</xsl:call-template>
@@ -1597,17 +1653,22 @@
 					<xsl:call-template name="datafield">
 						<xsl:with-param name="tag">610</xsl:with-param>
 						<xsl:with-param name="ind1">2</xsl:with-param>
-						<xsl:with-param name="ind2">
-							<xsl:call-template name="authorityInd"/>
-						</xsl:with-param>
+						<xsl:with-param name="ind2">0</xsl:with-param>
 						<xsl:with-param name="subfields">
 							<marc:subfield code="a">
-								<xsl:value-of select="mods:namePart"/>
+								<xsl:value-of select="mods:namePart[1]"/>
+								<xsl:if test="not(position()=last())">
+									<xsl:text>. </xsl:text>
+								</xsl:if>
 							</marc:subfield>
 							<xsl:for-each select="mods:namePart[position()>1]">
-								<marc:subfield code="a">
-									<xsl:value-of select="."/>
-								</marc:subfield>
+							<marc:subfield code="b">
+								<xsl:value-of select="."/>
+								<xsl:if test="not(position()=last())">
+									<xsl:text>. </xsl:text>
+								</xsl:if>
+								
+							</marc:subfield>
 							</xsl:for-each>
 							<!-- v3 role -->
 							<xsl:for-each select="mods:role/mods:roleTerm[@type='text']">
@@ -1615,11 +1676,16 @@
 									<xsl:value-of select="."/>
 								</marc:subfield>
 							</xsl:for-each>
-							<!--		<xsl:apply-templates select="*[position()>1]"/>-->
-							<xsl:apply-templates
-								select="ancestor-or-self::mods:subject/*[position()>1]"/>
-
-						</xsl:with-param>
+							<xsl:for-each select="following-sibling::node()">
+								<xsl:choose>
+									<xsl:when test="local-name()='genre'">
+										<marc:subfield code="v">
+											<xsl:value-of select="."/>
+										</marc:subfield>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:for-each>
+							</xsl:with-param>
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:when test="@type='conference'">
@@ -1657,7 +1723,33 @@
 				<marc:subfield code="a">
 					<xsl:value-of select="*[1]"/>
 				</marc:subfield>
-				<xsl:apply-templates select="*[position()>1]"/>
+				<xsl:for-each select="node()">
+					<xsl:choose>
+						<xsl:when test="local-name()='genre'">
+							<marc:subfield code="v">
+								<xsl:value-of select="."/>
+							</marc:subfield>
+						</xsl:when>
+					</xsl:choose>
+					
+					<xsl:choose>
+						<xsl:when test="local-name()='temporal'">
+							<marc:subfield code="y">
+								<xsl:value-of select="."/>
+							</marc:subfield>
+						</xsl:when>
+					</xsl:choose>
+					
+					<xsl:choose>
+						<xsl:when test="local-name()='topic'">
+							<marc:subfield code="x">
+								<xsl:value-of select="."/>
+							</marc:subfield>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+				
+
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1744,8 +1836,8 @@
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
-
-	<xsl:template match="mods:subject/mods:occupation">
+<!-- checked with Meg, move occupation to topic 20180508 -->
+<!--	<xsl:template match="mods:subject/mods:occupation">
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">656</xsl:with-param>
 			<xsl:with-param name="subfields">
@@ -1754,7 +1846,7 @@
 				</marc:subfield>
 			</xsl:with-param>
 		</xsl:call-template>
-	</xsl:template>
+	</xsl:template> --> 
 
 	<xsl:template match="mods:subject/mods:topic">
 		<marc:subfield code="x">
@@ -1931,9 +2023,9 @@
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">024</xsl:with-param>
 			<xsl:with-param name="subfields">
-						<marc:subfield code="a">
-							<xsl:value-of select="."/>
-						</marc:subfield>
+				<marc:subfield code="a">
+					<xsl:value-of select="."/>
+				</marc:subfield>
 				<marc:subfield code="2">
 					<xsl:value-of select="@type"/>
 				</marc:subfield>
@@ -2258,9 +2350,18 @@
 			<!-- BC Custom.  mods extension maps to 940 rather than 887-->
 			<xsl:with-param name="ind1">1</xsl:with-param>
 			<xsl:with-param name="subfields">
+				<xsl:choose>
+					<xsl:when test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+						<marc:subfield code="a">
+							<xsl:text>ms2001039</xsl:text>
+						</marc:subfield>
+					</xsl:when>
+				<xsl:otherwise>
 				<marc:subfield code="a">
 					<xsl:value-of select="localCollectionName"/>
 				</marc:subfield>
+				</xsl:otherwise>
+				</xsl:choose>
 			</xsl:with-param>
 		</xsl:call-template>
 
@@ -2271,7 +2372,7 @@
 				<xsl:choose>
 					<xsl:when test="contains(hdl,'http')">
 						<marc:subfield code="a">
-						<xsl:value-of select="substring-after(hdl, 'http://hdl.handle.net/')"/>
+							<xsl:value-of select="substring-after(hdl, 'http://hdl.handle.net/')"/>
 						</marc:subfield>
 					</xsl:when>
 					<xsl:otherwise>
@@ -2324,24 +2425,35 @@
 					<xsl:text>https://library.bc.edu/iiif/view/</xsl:text>
 					<xsl:choose>
 						<xsl:when test="contains(hdl,'http')">
-							<xsl:value-of select="substring-after(hdl, 'http://hdl.handle.net/2345.2/')"/>
-						</xsl:when>						
+							<xsl:value-of
+								select="substring-after(hdl, 'http://hdl.handle.net/2345.2/')"/>
+						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="substring-after(hdl, '/')"/>						
+							<xsl:if test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+								<xsl:text>MS2001_039_</xsl:text>
+							</xsl:if>
+							<xsl:value-of select="substring-after(hdl, '/')"/>
 						</xsl:otherwise>
 					</xsl:choose>
-					
+
 
 				</marc:subfield>
 
 
 				<marc:subfield code="q">
 					<xsl:choose>
-						<xsl:when test="contains(../mods:physicalDescription/mods:internetMediaType[1], ',')">
-							<xsl:value-of select="substring-before(../mods:physicalDescription/mods:internetMediaType[1], ',')"/>
+						<xsl:when
+							test="contains(../mods:physicalDescription/mods:internetMediaType[1], ',')">
+							<xsl:value-of
+								select="substring-before(../mods:physicalDescription/mods:internetMediaType[1], ',')"
+							/>
+						</xsl:when>
+						<xsl:when test="contains(ancestor::mods:mods/mods:relatedItem/mods:titleInfo/mods:title,'Bobbie')">
+							<xsl:text>image/tiff</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="../mods:physicalDescription/mods:internetMediaType[1]"/>
+							<xsl:value-of
+								select="../mods:physicalDescription/mods:internetMediaType[position()=last()]"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</marc:subfield>
@@ -2570,6 +2682,13 @@
 						<marc:subfield code="u"
 							>http://hdl.handle.net/2345.2/BC1988-027</marc:subfield>
 					</xsl:when>
+					<xsl:when
+						test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+						<marc:subfield code="u"
+							>http://www.bc.edu/sites/libraries/hanvey/index.html</marc:subfield>
+					</xsl:when>
+								
+					
 					<xsl:otherwise>
 						<marc:subfield code="u">
 							<xsl:value-of select="mods:location/mods:url"/>
@@ -2641,10 +2760,12 @@
 		</xsl:for-each>
 
 		<!--BC Custom, add dates subfield-->
+		<xsl:if test="mods:originInfo">
 		<marc:subfield code="d">
 			<xsl:value-of select="mods:originInfo/mods:dateCreated[not(@*)]"/>
 			<xsl:text>, </xsl:text>
 		</marc:subfield>
+		</xsl:if>
 
 		<!--BC Custom, subseries-->
 		<xsl:for-each select="mods:part/mods:detail">
@@ -2657,6 +2778,8 @@
 						<xsl:text>, </xsl:text>
 						<xsl:value-of select="mods:title"/>
 						<xsl:text>, </xsl:text>
+					
+						
 					</marc:subfield>
 				</xsl:when>
 				<xsl:when test="mods:caption and mods:title">
@@ -2667,6 +2790,20 @@
 						<xsl:text>, </xsl:text>
 					</marc:subfield>
 
+				</xsl:when>
+				
+				<xsl:when test="mods:caption and mods:number">
+					<marc:subfield code="g">
+					<xsl:value-of select="mods:caption"/>
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="mods:number"/>
+					<xsl:text>, </xsl:text>
+					</marc:subfield>
+					<marc:subfield code="o">				
+					<xsl:if test="contains(ancestor::mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+						<xsl:text>MS.2001.039.</xsl:text>
+					</xsl:if>
+					</marc:subfield>
 				</xsl:when>
 			</xsl:choose>
 
@@ -2712,8 +2849,9 @@
 			<marc:subfield code="o">
 				<xsl:value-of select="."/>
 			</marc:subfield>
-
 		</xsl:for-each>
+
+		
 		<xsl:for-each select="mods:identifier[@type='issn']">
 			<marc:subfield code="x">
 				<xsl:value-of select="."/>
