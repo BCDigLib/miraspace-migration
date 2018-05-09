@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VIEWSCRIPT="~/drive/dvc/miraspace-migration/bc-mirador/generate_mirador_view.rb"
+VIEWSCRIPT=~/drive/dvc/miraspace-migration/bc-mirador/generate_mirador_view.rb
 
 for file in mets_transformed/*.xml; do echo "Transforming $file"; metsiiif $file > manifests/`basename $file .xml`.json; done
 
