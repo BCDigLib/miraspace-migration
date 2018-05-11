@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# For collections with multiple OAI files, run this *after* concat_oai.rb
+RSCRIPT=~/drive/dvc/miraspace-migration/bc-mirador/modify_collection_oai.rb
+XSLT=~/Desktop/oaiMODS2solr.xsl
+INPUTOAI=oai/*.xml
+MODDEDOAI=`basename $INPUTOAI .xml`_modded.xml
+
+ruby $RSCRIPT manifests/ $INPUTOAI
+sleep 5
+xsltproc ~/Desktop/oaiMODS2solr.xsl $MODDEDOAI > oai/modded_solr_`basename $INPUTOAI`
+mv $MODDEDOAI oai/$MODDEDOAI
