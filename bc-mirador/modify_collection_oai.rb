@@ -21,6 +21,7 @@ input_json = Dir["#{manifest_dir}/*"]
 @doc = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
 input_json.each do |json|
+  puts "Processing #{File.basename(json)}..."
   manifest = JSON.parse(File.read(json))
   manifest_component_unique_id = manifest['@id'].split('/').last.gsub('.json', '')
   manifest_thumb_id = manifest['thumbnail']
