@@ -8,36 +8,27 @@
 	Upgraded to MODS 3.4
 	MODS v3 to MARC21Slim transformation  	ntra 2/20/04 
 -->
-
 	<xsl:include href="http://www.loc.gov/marcxml/xslt/MARC21slimUtils.xsl"/>
 	<xsl:variable name="genrelookup" select="document('genreLookup.xml')"/> 
-
+	<xsl:variable name="isHanvey">
+		<xsl:value-of select="contains(mods:modsCollection/mods:mods[1]/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')"/>
+	</xsl:variable>	
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
-
-	<xsl:template match="/">
-		<xsl:apply-templates/>
-	</xsl:template>
+	
+	
 
 	<xsl:template match="mods:modsCollection">
 		<marc:collection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+	
 			<xsl:apply-templates/>
 		</marc:collection>
 	</xsl:template>
+	
 	<!-- 1/04 fix -->
 	<!--<xsl:template match="mods:targetAudience/mods:listValue" mode="ctrl008">-->
 	<xsl:template match="mods:targetAudience[@authority='marctarget']" mode="ctrl008">
-		<xsl:choose>
-			<xsl:when test=".='adolescent'">d</xsl:when>
-			<xsl:when test=".='adult'">e</xsl:when>
-			<xsl:when test=".='general'">g</xsl:when>
-			<xsl:when test=".='juvenile'">j</xsl:when>
-			<xsl:when test=".='preschool'">a</xsl:when>
-			<xsl:when test=".='specialized'">f</xsl:when>
-			<xsl:otherwise>
 				<xsl:text>|</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
 	</xsl:template>
 
 	<xsl:template match="mods:typeOfResource" mode="leader">
@@ -605,7 +596,7 @@
 						<xsl:text>ead:c@LEVEL=</xsl:text>
 						<xsl:choose>
 							<xsl:when
-								test="contains(mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+								test="$isHanvey">
 								<xsl:text>file</xsl:text>
 							</xsl:when>
 							<xsl:when test="contains(mods:physicalDescription/mods:extent, 'item')">
@@ -998,6 +989,27 @@
 				</xsl:for-each>
 			</xsl:with-param>
 		</xsl:call-template>
+		<xsl:if test="$isHanvey">
+			
+			<xsl:call-template name="datafield">
+				<xsl:with-param name="tag">
+					<xsl:value-of select="655"/>
+				</xsl:with-param>
+				<xsl:with-param name="ind2">7</xsl:with-param>
+				<xsl:with-param name="subfields">
+					<marc:subfield code="a">
+						<xsl:value-of select="$genrelookup/genreLookup/genre[@value=text()]/@term"/>
+					</marc:subfield>
+					<xsl:for-each select="@authority">
+						<marc:subfield code="2">
+							<xsl:value-of select="$genrelookup/genreLookup/genre[@value=text()]/@auth"/>
+						</marc:subfield>
+					</xsl:for-each>
+				</xsl:with-param>
+			</xsl:call-template>	
+			
+		</xsl:if>
+
 	</xsl:template>
 
 
@@ -1486,7 +1498,7 @@
 			</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<xsl:choose>
-					<xsl:when test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+					<xsl:when test="$isHanvey">
 						<marc:subfield code="a">
 							<xsl:text>The Bobbie Hanvey Photographic Archives are licensed under a Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License.</xsl:text>
 						</marc:subfield>
@@ -2351,7 +2363,7 @@
 			<xsl:with-param name="ind1">1</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<xsl:choose>
-					<xsl:when test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+					<xsl:when test="$isHanvey">
 						<marc:subfield code="a">
 							<xsl:text>ms2001039</xsl:text>
 						</marc:subfield>
@@ -2429,7 +2441,7 @@
 								select="substring-after(hdl, 'http://hdl.handle.net/2345.2/')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+							<xsl:if test="$isHanvey">
 								<xsl:text>MS2001_039_</xsl:text>
 							</xsl:if>
 							<xsl:value-of select="substring-after(hdl, '/')"/>
@@ -2448,7 +2460,7 @@
 								select="substring-before(../mods:physicalDescription/mods:internetMediaType[1], ',')"
 							/>
 						</xsl:when>
-						<xsl:when test="contains(ancestor::mods:mods/mods:relatedItem/mods:titleInfo/mods:title,'Bobbie')">
+						<xsl:when test="$isHanvey">
 							<xsl:text>image/tiff</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
@@ -2683,7 +2695,7 @@
 							>http://hdl.handle.net/2345.2/BC1988-027</marc:subfield>
 					</xsl:when>
 					<xsl:when
-						test="contains(parent::mods:mods/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+						test="$isHanvey">
 						<marc:subfield code="u"
 							>http://www.bc.edu/sites/libraries/hanvey/index.html</marc:subfield>
 					</xsl:when>
@@ -2800,7 +2812,7 @@
 					<xsl:text>, </xsl:text>
 					</marc:subfield>
 					<marc:subfield code="o">				
-					<xsl:if test="contains(ancestor::mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">
+					<xsl:if test="$isHanvey">
 						<xsl:text>MS.2001.039.</xsl:text>
 					</xsl:if>
 					</marc:subfield>
