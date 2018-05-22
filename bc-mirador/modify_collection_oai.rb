@@ -9,8 +9,8 @@ if ARGV.empty?
   puts "Error: not enough arguments"
   puts "Usage: ruby modify_collection_oai.rb path/to/manifest_dir/ path/to/input_oai.xml"
   exit
-elsif !Pathname(input_xml).exist?
-  puts "Error: could not find #{input_json}"
+elsif !Pathname(manifest_dir).exist?
+  puts "Error: could not find #{manifest_dir}"
   exit
 elsif !Pathname(input_xml).exist?
   puts "Error: could not find #{input_xml}"
@@ -21,6 +21,7 @@ input_json = Dir["#{manifest_dir}/*"]
 @doc = File.open(input_xml) { |f| Nokogiri::XML(f) }
 
 input_json.each do |json|
+  puts "Processing #{File.basename(json)}..."
   manifest = JSON.parse(File.read(json))
   manifest_component_unique_id = manifest['@id'].split('/').last.gsub('.json', '')
   manifest_thumb_id = manifest['thumbnail']
