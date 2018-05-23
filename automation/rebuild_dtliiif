@@ -1,0 +1,5 @@
+gem uninstall dtliiif
+cd ~/drive/dvc/digitool-to-iiif
+rm dtliiif-*.gem
+gem build dtliiif.gemspec
+gem install dtliiif-*.gem

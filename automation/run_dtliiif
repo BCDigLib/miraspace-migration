@@ -1,0 +1,10 @@
+#!/bin/bash
+
+VIEWSCRIPT=~/drive/dvc/miraspace-migration/bc-mirador/generate_mirador_view.rb
+
+for file in de_renamed/*.xml; do echo "Transforming $file"; dtliiif $file > manifests/`basename $file .xml`.json; done
+
+if [ -f $VIEWSCRIPT ]
+then
+  for file in manifests/*.json; do echo "Generating view for $file"; ruby $VIEWSCRIPT $file > views/`basename $file .json`; done
+fi
