@@ -13,13 +13,14 @@ Dir.glob('*.xml') do |file|
 
   local_collection = marc_node.xpath('marc:record/marc:datafield[@tag="940"]/marc:subfield[@code="a"]', 'marc' => 'http://www.loc.gov/MARC21/slim').map { |node| node.text }
 
+
   if local_collection.include?("LITURGY AND LIFE")
     resource_id = "BC2013_017"
   elsif local_collection.include?("BECKER COLLECTION")
     resource_id = "becker_"
   elsif local_collection.include?("CONGRESSIONAL ARCHIVE")
     resource_id = "CA2009_001"
-  elsif marc_node.include?("Boston Gas")
+  elsif marc_node.to_s.include?("Boston Gas")
     resource_id = "MS1986_088"
   end
 
