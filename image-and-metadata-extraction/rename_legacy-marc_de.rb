@@ -17,7 +17,7 @@ Dir.glob('*.xml') do |file|
   if local_collection.include?("LITURGY AND LIFE")
     resource_id = "BC2013_017"
   elsif local_collection.include?("BECKER COLLECTION")
-    resource_id = "becker_"
+    resource_id = "becker"
   elsif local_collection.include?("CONGRESSIONAL ARCHIVE")
     resource_id = "CA2009_001"
   elsif marc_node.to_s.include?("Boston Gas")
