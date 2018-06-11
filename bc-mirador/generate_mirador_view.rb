@@ -1,5 +1,6 @@
 # Creates a Mirador view for a single manifest. Requires manifest file generated 
 # by metsiiif gem (https://github.com/BCLibraries/mets-to-iiif)
+# Note that GA_TRACKING_ID must be replaced with Google Analytics tracking ID
 
 require 'json'
 require 'pathname'
