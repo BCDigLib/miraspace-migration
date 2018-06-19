@@ -1,10 +1,12 @@
-## Mirador Utilities and Stylesheets
+## Mirador Utilities
 #### generate_mirador_view.rb
 Takes a IIIF manifest as input and outputs an HTML landing page that instantiates 
 Mirador. As currently written, this script creates one page per manifest.
 
-Usage:
+Before using, replace 'GA_TRACKING_ID' in the 'doc' variable with your Google 
+Analytics tracking ID.
 
+Usage:
 1. Create one or more IIIF manifests using the [metsiiif gem](https://github.com/BCLibraries/mets-to-iiif)).
 
 2. Run generate_mirador_view.rb on the manifest you created, e.g.:
@@ -23,6 +25,7 @@ for manifest in ./commencement-photos/manifests/*.json; do ruby generate_mirador
 a manifest in Mirador using its ArchivesSpace identifier in the URI, e.g.: 
 `https://library.bc.edu/iiif/view/BC1988_027_ref57`
 
+## Mirador Stylesheets and Plugins
 #### mirador-bc.css
 Includes local customizations to Mirador's appearance. This stylesheet should be 
 loaded in the Mirador landing page after 'mirador-combined.css'. 
