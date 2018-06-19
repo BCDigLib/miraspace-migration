@@ -9,10 +9,19 @@
 	MODS v3 to MARC21Slim transformation  	ntra 2/20/04 
 -->
 	<xsl:include href="http://www.loc.gov/marcxml/xslt/MARC21slimUtils.xsl"/>
-	<xsl:variable name="genrelookup" select="document('genreLookup.xml')"/> 
+
+
 	<xsl:variable name="isHanvey">
-		<xsl:value-of select="contains(mods:modsCollection/mods:mods[1]/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')"/>
+		<xsl:choose>
+			<xsl:when test="contains(mods:modsCollection/mods:mods[1]/mods:relatedItem/mods:titleInfo/mods:title, 'Bobbie')">true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+
 	</xsl:variable>	
+	<xsl:variable name="genreLookup" select="document('genreLookup.xml')"/> 
+
+	
+
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	
 	
@@ -112,6 +121,7 @@
 						<marc:subfield code="b">cr</marc:subfield>
 						<marc:subfield code="2">
 							<xsl:text>rdacarrier</xsl:text>
+
 						</marc:subfield>
 					</xsl:with-param>
 				</xsl:call-template>
@@ -120,6 +130,36 @@
 
 
 		</xsl:choose>
+		<!-- brute force addition of mods data missing from athletics records-->
+		<xsl:if test="parent::mods:mods/mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019'">
+			<xsl:call-template name="datafield">
+				<xsl:with-param name="tag">655</xsl:with-param>
+				<xsl:with-param name="ind2">7</xsl:with-param>
+				<xsl:with-param name="subfields">
+					<marc:subfield code="a">Photographs</marc:subfield>
+					<marc:subfield code="2">
+						<xsl:text>gmgpc</xsl:text>
+					</marc:subfield>
+				</xsl:with-param>
+			</xsl:call-template>
+			<xsl:call-template name="datafield">
+				<xsl:with-param name="tag">533</xsl:with-param>
+				<xsl:with-param name="subfields">
+					<marc:subfield code="a">Electronic reproduction.</marc:subfield>
+					<marc:subfield code="b">Chestnut Hill, Mass. :</marc:subfield>
+					<marc:subfield code="c">Boston College, </marc:subfield>
+					<marc:subfield code="d">
+						<xsl:value-of
+							select="substring(parent::mods:mods/mods:physicalDescription/following-sibling::mods:extension/creation_date,1,4)"/>
+						<xsl:text>. </xsl:text>
+					</marc:subfield>
+
+				</xsl:with-param>
+			</xsl:call-template>
+			
+			</xsl:if>
+			
+		
 	</xsl:template>
 
 	<xsl:template name="controlField008-24-27">
@@ -209,6 +249,8 @@
 	</xsl:template>
 
 	<xsl:template match="mods:mods">
+		
+
 		<marc:record>
 			<marc:leader>
 				<!-- 00-04 -->
@@ -291,12 +333,13 @@
 				</xsl:choose>
 				<!-- 06 -->
 				<xsl:choose>
-					<!--<xsl:when test="mods:originInfo/mods:issuance='monographic' and count(mods:originInfo/mods:dateIssued)=1">s</xsl:when>-->
+					<!--<xsl:when test="mods:originInfo/ms:issuance='monographic' and count(mods:originInfo/mods:dateIssued)=1">s</xsl:when>-->
+
 					<xsl:when
-						test="mods:originInfo/mods:issuance='monographic' and count(mods:originInfo/mods:dateCreated)=2"
+						test="mods:originInfo/mods:issuance='monographic' and count(mods:originInfo/mods:dateCreated[@encoding='w3cdtf'])=1"
 						>s</xsl:when>
 					<xsl:when
-						test="mods:originInfo/mods:issuance='monographic' and count(mods:originInfo/mods:dateCreated)=3"
+						test="mods:originInfo/mods:issuance='monographic' and count(mods:originInfo/mods:dateCreated[@encoding='w3cdtf'])=2"
 						>m</xsl:when>
 					<!-- v3 questionable -->
 					<xsl:when test="mods:originInfo/mods:dateIssued[@qualifier='questionable']"
@@ -562,12 +605,18 @@
 				<xsl:choose>
 					<!-- v3 language -->
 					<!-- BC Custom fixes LC bug, only language code, not text, should go to 008-->
+					<!-- handle bad data in athletics-->
+					<xsl:when
+						test="mods:relatedItem[@*]/mods:identifier[@type='accession number']='BC.1986.019'">
+						<xsl:text>zxx</xsl:text>
+					</xsl:when>
 					<xsl:when
 						test="mods:language/mods:languageTerm[@type='code'][@authority='iso639-2b']">
 						<xsl:value-of
 							select="mods:language/mods:languageTerm[@type='code'][@authority='iso639-2b']"
 						/>
 					</xsl:when>
+
 					<xsl:otherwise>
 						<xsl:text>|||</xsl:text>
 					</xsl:otherwise>
@@ -585,7 +634,10 @@
 			<xsl:variable name="varPID">
 				<xsl:value-of select="mods:extension/thumbnail"/>
 			</xsl:variable>
+
+			<xsl:variable name="lookThisUp" select="normalize-space(mods:genre[1])"/>
 			<xsl:call-template name="datafield">
+				
 				<xsl:with-param name="tag">991</xsl:with-param>
 				<xsl:with-param name="subfields">
 					<marc:subfield code="a">DAO</marc:subfield>
@@ -596,7 +648,7 @@
 						<xsl:text>ead:c@LEVEL=</xsl:text>
 						<xsl:choose>
 							<xsl:when
-								test="$isHanvey">
+								test="$isHanvey='true'">
 								<xsl:text>file</xsl:text>
 							</xsl:when>
 							<xsl:when test="contains(mods:physicalDescription/mods:extent, 'item')">
@@ -610,21 +662,64 @@
 
 					<marc:subfield code="t">
 						<!--<xsl:value-of select="mods:extension/thumbnail"/>-->
-						<xsl:value-of
-							select="substring-after(substring-before($varFilenameLookup/dataroot/EXIF[child::PID=$varPID]/FileName, '_jp' ),'_')"
-						/>
+						<xsl:choose>
+							<xsl:when test="($isHanvey='true') or (mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019')">
+								<xsl:value-of select="mods:extension/label"></xsl:value-of>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of
+									select="substring-after(substring-before($varFilenameLookup/dataroot/EXIF[child::PID=$varPID]/FileName, '_jp' ),'_')"
+								/>
+							</xsl:otherwise>
+						</xsl:choose>
+						
 					</marc:subfield>
 					<marc:subfield code="r">
-						<xsl:value-of select="mods:recordInfo/mods:recordOrigin"/>
-						<xsl:text> (</xsl:text>
-						<xsl:value-of select="mods:extension/creation_date"/>
-						<xsl:text>)</xsl:text>
+						<xsl:choose>
+							<xsl:when test="mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019'">
+								<xsl:text>Boston College/Archivists Toolkit Batch DAO</xsl:text>
+								<xsl:value-of select="mods:recordInfo/mods:recordOrigin"/>
+								<xsl:text> (</xsl:text>
+								<xsl:value-of select="normalize-space(mods:extension/creation_date)"/>
+								<xsl:text>)</xsl:text>
+							</xsl:when>
+
+						<xsl:otherwise>
+							<xsl:value-of select="mods:recordInfo/mods:recordOrigin"/>
+							<xsl:text> (</xsl:text>
+							<xsl:value-of select="normalize-space(mods:extension/creation_date)"/>
+							<xsl:text>)</xsl:text>
+						</xsl:otherwise>
+						</xsl:choose>
 					</marc:subfield>
 					<marc:subfield code="g">
-						<xsl:value-of select="mods:genre[@displayLabel='general']"/>
+						<xsl:choose>
+							<xsl:when test="$isHanvey='true'">
+								<xsl:value-of select="$genreLookup/genreLookup/genre[@value=$lookThisUp]/@term"/>
+							</xsl:when>
+							<xsl:when test="mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019'">
+								<xsl:text>Photographs</xsl:text>
+							</xsl:when>	
+							<xsl:otherwise>
+								<xsl:value-of select="mods:genre[@displayLabel='general']"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						
+
 					</marc:subfield>
 					<marc:subfield code="2">
-						<xsl:value-of select="mods:genre/@authority"/>
+						<xsl:choose>
+							<xsl:when test="$isHanvey='true'">
+								<xsl:value-of select="$genreLookup/genreLookup/genre[@value=$lookThisUp]/@auth"/>
+							</xsl:when>
+							<xsl:when test="mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019'">
+								<xsl:text>gmgpc</xsl:text>
+							</xsl:when>	
+							<xsl:otherwise>
+								<xsl:value-of select="mods:genre/@authority"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						
 					</marc:subfield>
 				</xsl:with-param>
 			</xsl:call-template>
@@ -965,6 +1060,8 @@
 
 	<!-- Genre elements -->
 	<xsl:template match="mods:genre[@authority!='marcgt' or not(@authority) or not(parent::mods:subject)]">
+		<xsl:variable name="genreLookup" select="document('genreLookup.xml')"/> 
+		<xsl:variable name="lookThisUp" select="normalize-space(.)"/>
 		<xsl:variable name="dfv">
 			<xsl:choose>
 				<xsl:when test="@authority = 'content' and @type='musical composition'"
@@ -973,6 +1070,7 @@
 				<xsl:otherwise>655</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">
 				<xsl:value-of select="$dfv"/>
@@ -982,27 +1080,33 @@
 				<marc:subfield code="a">
 					<xsl:value-of select="."/>
 				</marc:subfield>
-				<xsl:for-each select="@authority">
+				
 					<marc:subfield code="2">
-						<xsl:value-of select="."/>
+						<xsl:value-of select="@authority"/>
 					</marc:subfield>
-				</xsl:for-each>
+				
 			</xsl:with-param>
 		</xsl:call-template>
-		<xsl:if test="$isHanvey">
-			
+		
+
+		<xsl:if test="$isHanvey='true' and (.=parent::mods:mods/mods:genre[position()=last()])">
+
+
 			<xsl:call-template name="datafield">
 				<xsl:with-param name="tag">
 					<xsl:value-of select="655"/>
 				</xsl:with-param>
-				<xsl:with-param name="ind2">7</xsl:with-param>
+				
+				<xsl:with-param name="ind2" select="7"/>
 				<xsl:with-param name="subfields">
+					
 					<marc:subfield code="a">
-						<xsl:value-of select="$genrelookup/genreLookup/genre[@value=text()]/@term"/>
+
+						<xsl:value-of select="$genreLookup/genreLookup/genre[@value=$lookThisUp]/@term"/>
 					</marc:subfield>
 					<xsl:for-each select="@authority">
 						<marc:subfield code="2">
-							<xsl:value-of select="$genrelookup/genreLookup/genre[@value=text()]/@auth"/>
+							<xsl:value-of select="$genreLookup/genreLookup/genre[@value=$lookThisUp]/@auth"/>
 						</marc:subfield>
 					</xsl:for-each>
 				</xsl:with-param>
@@ -1150,12 +1254,24 @@
 						</xsl:if>
 					</marc:subfield>
 				</xsl:for-each>
-				<xsl:for-each select="mods:dateCreated[not(@*)]">
-					<marc:subfield code="c">
-						<xsl:value-of select="."/>
-						<xsl:text>.</xsl:text>
-					</marc:subfield>
-				</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="mods:dateOther">
+						<marc:subfield code="c">
+							<xsl:value-of select="mods:dateOther"/>
+							<xsl:text>.</xsl:text>
+						</marc:subfield>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:for-each select="mods:dateCreated[not(@*)]">
+							<marc:subfield code="c">
+								<xsl:value-of select="."/>
+								<xsl:text>.</xsl:text>
+							</marc:subfield>
+						</xsl:for-each>
+					</xsl:otherwise>
+				</xsl:choose>
+
+			
 			</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
@@ -1434,11 +1550,16 @@
 	<!-- Note -->
 	<!-- 1/04 fix -->
 	<xsl:template match="mods:note[not(@type='statement of responsibility')]">
+		<xsl:choose>
+			<xsl:when test="($isHanvey='true') and (contains(.,'Title b') or contains(.,'Title f') or contains(.,'Title s'))"></xsl:when>
+
+		<xsl:otherwise>
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">
 				<xsl:choose>
 					<xsl:when test="@type='performers'">511</xsl:when>
 					<xsl:when test="@type='venue'">518</xsl:when>
+					
 					<xsl:otherwise>500</xsl:otherwise>
 				</xsl:choose>
 			</xsl:with-param>
@@ -1447,6 +1568,9 @@
 					<xsl:choose>
 						<xsl:when test="contains(.,'Dimensions of Original')">
 							<xsl:value-of select="concat(replace(.,'Original', 'original'),'.')"/>
+						</xsl:when>
+						<xsl:when test="contains(.,'BH') and $isHanvey='true'">
+							<xsl:value-of select="concat(replace(.,'BH', 'bh'),'.')"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:value-of select="."/>
@@ -1461,6 +1585,8 @@
 				</xsl:for-each>-->
 			</xsl:with-param>
 		</xsl:call-template>
+		</xsl:otherwise>
+		</xsl:choose>
 		<xsl:for-each select="@xlink:href">
 			<xsl:call-template name="datafield">
 				<xsl:with-param name="tag">856</xsl:with-param>
@@ -1498,7 +1624,7 @@
 			</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<xsl:choose>
-					<xsl:when test="$isHanvey">
+					<xsl:when test="$isHanvey='true'">
 						<marc:subfield code="a">
 							<xsl:text>The Bobbie Hanvey Photographic Archives are licensed under a Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 United States License.</xsl:text>
 						</marc:subfield>
@@ -2363,9 +2489,14 @@
 			<xsl:with-param name="ind1">1</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<xsl:choose>
-					<xsl:when test="$isHanvey">
+					<xsl:when test="$isHanvey='true'">
 						<marc:subfield code="a">
 							<xsl:text>ms2001039</xsl:text>
+						</marc:subfield>
+					</xsl:when>
+					<xsl:when test="mods:localCollectionName">
+						<marc:subfield code="a">
+							<xsl:value-of select="mods:localCollectionName"/>
 						</marc:subfield>
 					</xsl:when>
 				<xsl:otherwise>
@@ -2441,7 +2572,7 @@
 								select="substring-after(hdl, 'http://hdl.handle.net/2345.2/')"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="$isHanvey">
+							<xsl:if test="$isHanvey='true'">
 								<xsl:text>MS2001_039_</xsl:text>
 							</xsl:if>
 							<xsl:value-of select="substring-after(hdl, '/')"/>
@@ -2460,7 +2591,7 @@
 								select="substring-before(../mods:physicalDescription/mods:internetMediaType[1], ',')"
 							/>
 						</xsl:when>
-						<xsl:when test="$isHanvey">
+						<xsl:when test="$isHanvey='true'">
 							<xsl:text>image/tiff</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
@@ -2695,7 +2826,7 @@
 							>http://hdl.handle.net/2345.2/BC1988-027</marc:subfield>
 					</xsl:when>
 					<xsl:when
-						test="$isHanvey">
+						test="$isHanvey='true'">
 						<marc:subfield code="u"
 							>http://www.bc.edu/sites/libraries/hanvey/index.html</marc:subfield>
 					</xsl:when>
@@ -2773,10 +2904,22 @@
 
 		<!--BC Custom, add dates subfield-->
 		<xsl:if test="mods:originInfo">
-		<marc:subfield code="d">
-			<xsl:value-of select="mods:originInfo/mods:dateCreated[not(@*)]"/>
-			<xsl:text>, </xsl:text>
-		</marc:subfield>
+			<xsl:choose>
+				<!-- Handle bad relatedItem dates in athletics-->
+				<xsl:when test="mods:identifier[@type='accession number']='BC.1986.019'">
+					<marc:subfield code="d">
+						<xsl:text>1889-2013, </xsl:text>
+					</marc:subfield>
+				</xsl:when>
+				<xsl:otherwise>
+					<marc:subfield code="d">
+						<xsl:value-of select="mods:originInfo/mods:dateCreated[not(@*)]"/>
+						<xsl:text>, </xsl:text>
+					</marc:subfield>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+
 		</xsl:if>
 
 		<!--BC Custom, subseries-->
@@ -2812,7 +2955,7 @@
 					<xsl:text>, </xsl:text>
 					</marc:subfield>
 					<marc:subfield code="o">				
-					<xsl:if test="$isHanvey">
+						<xsl:if test="$isHanvey='true'">
 						<xsl:text>MS.2001.039.</xsl:text>
 					</xsl:if>
 					</marc:subfield>
