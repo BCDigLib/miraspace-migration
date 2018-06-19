@@ -92,6 +92,7 @@ def build_document(file)
   <link rel="stylesheet" type="text/css" href="/iiif/bc-mirador/slicknav.css"></link>
   <script type="text/javascript" src="/iiif/build/mirador/mirador.js"></script>
   <script type="text/javascript" src="/iiif/bc-mirador/jquery.slicknav.min.js"></script>
+  <script type="text/javascript" src="/iiif/bc-mirador/downloadMenu.js"></script>
 </head>
 
 <body>
