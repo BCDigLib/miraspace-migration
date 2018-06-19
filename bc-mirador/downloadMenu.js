@@ -12,13 +12,11 @@ var DownloadButton = {
     '<i class="fa fa-download fa-lg fa-fw"></i>',
     '<i class="fa fa-caret-down"></i>',
     '<ul class="dropdown download-list">',
-    '<li title="IIIF-Manifest"><a href="{{manifestUrl}}" target="_blank">',
-    '<i class="fa fa-file-text-o fa-lg fa-fw"></i>IIIF Manifest',
     '</a></li>',
     '{{#each imageUrls}}',
-    '<li class="{{#if (eq this "#")}}disabled {{/if}}image-link" title="JPG ({{this.title}})">',
+    '<li class="{{#if (eq this "#")}}disabled {{/if}}image-link" title="JPG">',
     '<a href="{{this.href}}" download="{{this.imageBasename}}" target="_blank">',
-    '<i class="fa fa-file-image-o fa-lg fa-fw"></i>JPG (<span class="dimensions">{{this.title}}</span>)',
+    '<i class="fa fa-file-image-o fa-lg fa-fw"></i>JPG',
     '</a></li>',
     '{{/each}}',
     '</ul>',
@@ -32,13 +30,12 @@ var DownloadButton = {
     var ratio = currentImage.height / currentImage.width;
 
     var imageUrls = [];
-    ['full', '250,'].forEach(function(size){
+    ['full'].forEach(function(size){
       imageUrls.push({
         'href': viewerWindow.currentImageMode !== 'ImageView' ? '#' : this.imageUrlTemplate({
           'imageBaseUrl': imageBaseUrl, 'size': size
         }),
-        'title': size === 'full' ? currentImage.width + 'x' + currentImage.height : parseInt(size) + 'x' + Math.ceil(parseInt(size) * ratio),
-        'imageBasename': href.split('/')[3].slice(0,-4) + '.jpg'
+        'title': size === 'full' ? currentImage.width + 'x' + currentImage.height : parseInt(size) + 'x' + Math.ceil(parseInt(size) * ratio)
       });
     }.bind(this));
     return imageUrls;
@@ -90,8 +87,6 @@ var DownloadButton = {
             'title', function(index){ return 'JPG (' + imageUrls[index].title + ')'; }
           ).find('a').attr(
             'href', function(index){ return imageUrls[index].href; }
-          ).find('a').attr(
-            'download', function(index){ return imageUrls[index].imageBasename; }
           ).find('span.dimensions').text(
             function(index){ return imageUrls[index].title; }
           );
