@@ -67,7 +67,7 @@ var DownloadButton = {
         if(data.viewType === 'ImageView'){
           var imageUrls = this_.extractImageUrls(this);
           this.element.find('.image-link').removeClass('disabled').attr(
-            'title', function(index){ return 'JPG (' + imageUrls[index].title + ')'; }
+            'title', function(index){ return 'Download JPEG (' + imageUrls[index].title + ')'; }
           ).find('a').attr(
             'href', function(index){ return imageUrls[index].href; }
           ).find('span.dimensions').text(
