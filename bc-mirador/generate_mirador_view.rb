@@ -15,7 +15,7 @@ def handle_input(file)
     puts "Usage: ruby generate_mirador_view.rb some_iiif_manifest.json\n"
     exit
   elsif File.extname(file) != '.json'
-    puts "Error: argument must be a JSON file\n"
+    puts "Error: input must be a JSON file\n"
     puts "Usage: ruby generate_mirador_view.rb some_iiif_manifest.json\n"
     exit
   elsif !Pathname(file).exist?
