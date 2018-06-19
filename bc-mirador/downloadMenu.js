@@ -57,19 +57,6 @@ var DownloadButton = {
   /* injects the needed window event handler */
   injectWindowEventHandler: function(){
     var this_ = this;
-    var origBindNavigation = Mirador.Window.prototype.bindNavigation;
-    Mirador.Window.prototype.bindNavigation = function(){
-      origBindNavigation.apply(this);
-      this.element.find('.window-manifest-navigation').on(
-        'mouseenter', '.mirador-icon-download', function(){
-          this.element.find('.download-list').stop().slideFadeToggle(300);
-        }.bind(this)
-      ).on(
-        'mouseleave', '.mirador-icon-download', function(){
-          this.element.find('.download-list').stop().slideFadeToggle(300);
-        }.bind(this)
-      );
-    };
     var origBindEvents = Mirador.Window.prototype.bindEvents;
     Mirador.Window.prototype.bindEvents = function(){
       origBindEvents.apply(this);
