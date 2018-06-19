@@ -6,17 +6,17 @@ require 'json'
 require 'pathname'
 
 def handle_input(file)
-    if ARGV.empty?
+  if ARGV.empty?
     puts "Error: no argument supplied"
-    puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
+    puts "Usage: ruby generate_mirador_view.rb some_iiif_manifest.json\n"
     exit
   elsif ARGV.length > 1
     puts "Error: takes only one argument\n"
-    puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
+    puts "Usage: ruby generate_mirador_view.rb some_iiif_manifest.json\n"
     exit
   elsif File.extname(file) != '.json'
     puts "Error: argument must be a JSON file\n"
-    puts "Usage: ruby add_manifests.rb some_iiif_manifest.json\n"
+    puts "Usage: ruby generate_mirador_view.rb some_iiif_manifest.json\n"
     exit
   elsif !Pathname(file).exist?
     puts "Error: #{file} could not be found"
