@@ -9,19 +9,13 @@ var DownloadButton = {
   /* the template for the link button */
   buttonTemplate: Mirador.Handlebars.compile([
     '<span class="mirador-btn mirador-icon-download" role="button" title="Download">',
-    '<i class="fa fa-download fa-lg fa-fw"></i>',
-    '<i class="fa fa-caret-down"></i>',
-    '<ul class="dropdown download-list">',
-    '<li title="IIIF-Manifest"><a href="{{manifestUrl}}" target="_blank">',
-    '<i class="fa fa-file-text-o fa-lg fa-fw"></i>IIIF Manifest',
-    '</a></li>',
     '{{#each imageUrls}}',
-    '<li class="{{#if (eq this "#")}}disabled {{/if}}image-link" title="JPG ({{this.title}})">',
+    '<span class="{{#if (eq this "#")}}disabled {{/if}}image-link">',
     '<a href="{{this.href}}" target="_blank">',
-    '<i class="fa fa-file-image-o fa-lg fa-fw"></i>JPG (<span class="dimensions">{{this.title}}</span>)',
-    '</a></li>',
+    '<i class="fa fa-download fa-lg fa-fwi"></i>',
+    '</a>',
+    '</span>',
     '{{/each}}',
-    '</ul>',
     '</span>'
   ].join('')),
 
@@ -32,7 +26,7 @@ var DownloadButton = {
     var ratio = currentImage.height / currentImage.width;
 
     var imageUrls = [];
-    ['full', '250,'].forEach(function(size){
+    ['full'].forEach(function(size){
       imageUrls.push({
         'href': viewerWindow.currentImageMode !== 'ImageView' ? '#' : this.imageUrlTemplate({
           'imageBaseUrl': imageBaseUrl, 'size': size
@@ -63,19 +57,6 @@ var DownloadButton = {
   /* injects the needed window event handler */
   injectWindowEventHandler: function(){
     var this_ = this;
-    var origBindNavigation = Mirador.Window.prototype.bindNavigation;
-    Mirador.Window.prototype.bindNavigation = function(){
-      origBindNavigation.apply(this);
-      this.element.find('.window-manifest-navigation').on(
-        'mouseenter', '.mirador-icon-download', function(){
-          this.element.find('.download-list').stop().slideFadeToggle(300);
-        }.bind(this)
-      ).on(
-        'mouseleave', '.mirador-icon-download', function(){
-          this.element.find('.download-list').stop().slideFadeToggle(300);
-        }.bind(this)
-      );
-    };
     var origBindEvents = Mirador.Window.prototype.bindEvents;
     Mirador.Window.prototype.bindEvents = function(){
       origBindEvents.apply(this);

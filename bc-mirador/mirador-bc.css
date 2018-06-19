@@ -46,6 +46,16 @@ body {
     display:none;
 }
 
+.window-manifest-navigation > .mirador-btn.mirador-icon-download {
+  color: #929191;
+  margin-right: 10px;
+  width: 30px;
+}
+
+.window-manifest-navigation > .mirador-btn.mirador-icon-download:hover {
+  color: black;
+}
+
 @media screen and (max-width: 900px) {
     /* #menu is the original menu */
     .user-buttons, .mainmenu-button {
