@@ -1,0 +1,6 @@
+#!/bin/sh
+
+HDLSCRIPT=~/drive/dvc/miraspace-migration/image-and-metadata-extraction/handle-redirects/redirect_handle.rb
+COLLDIR="${PWD##*/}"
+
+for manifest in manifests/*.json; do ruby $HDLSCRIPT $manifest >> hdl_redirects_$COLLDIR.txt; done
