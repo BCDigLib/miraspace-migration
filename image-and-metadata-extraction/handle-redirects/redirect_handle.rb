@@ -16,14 +16,11 @@ end
 input_file = ARGV[0]
 manifest = JSON.parse(File.read(input_file))
 handle_uri = manifest['metadata'][0]['handle']
-
 handle = handle_uri.split('/')[-2] + '/' + handle_uri.split('/')[-1]
-libsearch_prefix = 'http://bclib.bc.edu/libsearch/bc/hdl/'
-
 
 modify_statement = <<-EOF
 MODIFY #{handle}
-201 URL 86400 1110 UTF8 #{libsearch_prefix + handle}
+201 URL 86400 1110 UTF8 http://bclib.bc.edu/libsearch/bc/hdl/#{handle}
   EOF
 
 puts modify_statement
