@@ -33,9 +33,14 @@ loaded in the Mirador landing page after 'mirador-combined.css'.
 #### bcViewer.js
 Helper script to initialize the settings for the Mirador viewer.
 
-#### downloadMenu.js
+#### downloadImage.js
 Plugin that allows end users to download the currently displayed canvas at 
 full resolution.
+
+#### downloadCanvas.js
+Not currently in use. An experimental attempt to directly download the current 
+canvas using XHRs. Retained for documentation purposes as we may return to it at 
+some point.
 
 ## Mirador Usage Notes
 #### Linking to thumbnails, manifests, and canvases
