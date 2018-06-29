@@ -957,6 +957,7 @@
 					<marc:subfield code="d">
 
 						<xsl:value-of select="."/>
+						<xsl:text>, </xsl:text>
 					</marc:subfield>
 				</xsl:for-each>
 				<!-- v3 role -->
@@ -1511,7 +1512,7 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
-	<xsl:template match="mods:extent">
+	<xsl:template match="mods:extent[1]">
 		<xsl:call-template name="datafield">
 			<xsl:with-param name="tag">300</xsl:with-param>
 			<xsl:with-param name="subfields">
@@ -1523,7 +1524,7 @@
 								select="ancestor::mods:mods/mods:extension/digital_surrogates"/>
 							<xsl:text> image</xsl:text>
 							<xsl:if
-								test="ancestor::mods:mods/mods:extension/digital_surrogates &gt;1 "
+								test="ancestor::mods:mods/mods:extension/digital_surrogates &gt; '1' "
 								>s</xsl:if>
 							<xsl:text>)</xsl:text>
 						</marc:subfield>
@@ -1555,6 +1556,19 @@
 								select="substring(parent::mods:physicalDescription/following-sibling::mods:extension/creation_date,1,4)"/>
 							<xsl:text>. </xsl:text>
 						</marc:subfield>
+						<xsl:if test="$isHanvey='true'">
+							<marc:subfield code="n">
+								<xsl:text>Digital reproduction of </xsl:text>
+								<xsl:value-of select="parent::mods:physicalDescription/mods:extent[1]"/>
+								<xsl:if test="parent::mods:physicalDescription/mods:extent[2]">
+									<xsl:text> and </xsl:text>
+									<xsl:value-of select="parent::mods:physicalDescription/mods:extent[2]"></xsl:value-of>
+								</xsl:if>
+								<xsl:text>.</xsl:text>
+							</marc:subfield>
+							
+							
+						</xsl:if>
 						<!--	
 						<marc:subfield code='e'><xsl:value-of select="preceding-sibling::mods:extent"/>
 						<xsl:text>.</xsl:text></marc:subfield>-->
@@ -1833,7 +1847,7 @@
 						<xsl:when test="local-name()='geographic'">
 							<marc:subfield code="z">
 								<xsl:value-of select="."/>
-								<xsl:if test=".[position()=last()]">
+								<xsl:if test="position()=last()">
 									<xsl:text>.</xsl:text>
 								</xsl:if>
 							</marc:subfield>
@@ -1843,14 +1857,16 @@
 						<xsl:when test="local-name()='genre'">
 							<marc:subfield code="v">
 								<xsl:value-of select="."/>
-								<xsl:text>.</xsl:text>
+								<xsl:if test="position()=last()">
+									<xsl:text>.</xsl:text>
+								</xsl:if>
 
 							</marc:subfield>
 						</xsl:when>
 						<xsl:when test="local-name()='temporal'">
-							<marc:subfield code="v">
+							<marc:subfield code="y">
 								<xsl:value-of select="."/>
-								<xsl:if test=".[position()=last()]">
+								<xsl:if test="position()=last()">
 									<xsl:text>.</xsl:text>
 								</xsl:if>
 							</marc:subfield>
@@ -1989,6 +2005,8 @@
 									<xsl:if test="not(position()=last())">
 										<xsl:text>. </xsl:text>
 									</xsl:if>
+
+									
 
 								</marc:subfield>
 							</xsl:for-each>
@@ -2812,7 +2830,7 @@
 				<marc:subfield code="3">
 					<xsl:value-of select="digital_surrogates"/>
 					<xsl:text> image</xsl:text>
-					<xsl:if test="digital_surrogates &gt; 1">
+					<xsl:if test="digital_surrogates &gt; '1'">
 						<xsl:text>s</xsl:text>
 					</xsl:if>
 					<!--<xsl:value-of select="replace(replace(replace(..//mods:physicalDescription/mods:extent,'1 file \(',''), '1 item ',''),'digital surrogate', 'image')"/>-->
@@ -2867,7 +2885,7 @@
 					<xsl:text>View online resource (</xsl:text>
 					<xsl:value-of select="digital_surrogates"/>
 					<xsl:text> image</xsl:text>
-					<xsl:if test="digital_surrogates &gt; 1">
+					<xsl:if test="digital_surrogates &gt; '1'">
 						<xsl:text>s</xsl:text>
 					</xsl:if>
 					<xsl:text>)</xsl:text>
