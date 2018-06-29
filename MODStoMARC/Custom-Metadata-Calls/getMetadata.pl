@@ -113,6 +113,8 @@ sub main {
 	$result =~ s/ version\=\"2\.0\" xsi\:schemaLocation="info\:lc\/xmlns\/premis\-v2 http\:\/\/www\.loc\.gov\/standards\/premis\/premis\.xsd\"//;
 	$result =~ s/ xmlns\=\"info\:lc\/xmlns\/premis\-v2\" xmlns\:xsi\=\"http\:\/\/www\.w3\.org\/2001\/XMLSchema\-instance\"//;
 
+#<object xmlns="http://www.loc.gov/standards/premis">
+
         
 
 	
