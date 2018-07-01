@@ -20,6 +20,15 @@
 		</xsl:choose>
 
 	</xsl:variable>
+	<xsl:variable name="isBrooker">
+		<xsl:choose>
+			<xsl:when
+				test="contains(mods:modsCollection/mods:mods[1]/mods:extension/localCollectionName, 'rooker')"
+				>true</xsl:when>
+			<xsl:otherwise>false</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:variable>
 	<xsl:variable name="genreLookup" select="document('genreLookup.xml')"/>
 
 
@@ -338,7 +347,15 @@
 			<xsl:if test="mods:genre[@authority='marc']='globe'">
 				<marc:controlfield tag="007">d|||||</marc:controlfield>
 			</xsl:if>
-			<marc:controlfield tag="006">m####|o##c########</marc:controlfield>
+			<xsl:choose>
+				<xsl:when test="mods:typeOfResource='text'">
+					<marc:controlfield tag="006">m####|o##d########</marc:controlfield>
+				</xsl:when>
+				<xsl:when test="mods:typeOfResource='still image'">
+					<marc:controlfield tag="006">m####|o##c########</marc:controlfield>
+				</xsl:when>
+			</xsl:choose>
+
 			<xsl:choose>
 				<xsl:when test="mods:physicalDescription/mods:digitalOrigin='born digital'">
 					<marc:controlfield tag="007">cr#cz#||||||||</marc:controlfield>
@@ -703,6 +720,9 @@
 					<marc:subfield code="l">
 						<xsl:text>ead:c@LEVEL=</xsl:text>
 						<xsl:choose>
+							<xsl:when test="$isBrooker='true'">
+								<xsl:text>item</xsl:text>
+							</xsl:when>
 							<xsl:when test="$isHanvey='true'">
 								<xsl:text>file</xsl:text>
 							</xsl:when>
@@ -722,6 +742,10 @@
 								test="($isHanvey='true') or (mods:relatedItem/mods:identifier[@type='accession number']='BC.1986.019')">
 								<xsl:value-of select="mods:extension/label"/>
 							</xsl:when>
+							<xsl:when
+								test="($isBrooker='true')">
+								<xsl:value-of select="$varFilenameLookup/dataroot/pid[text()=$varPID]/FileName"/>
+							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="mods:extension/label"/>
 							</xsl:otherwise>
@@ -730,7 +754,7 @@
 					</marc:subfield>
 					<marc:subfield code="r">
 						<xsl:choose>
-							<xsl:when test="$isHanvey='true'">
+							<xsl:when test="$isHanvey='true' or $isBrooker='true'">
 								<xsl:text>PERL script executed on Excel sheet (</xsl:text>
 								<xsl:value-of select="normalize-space(mods:extension/creation_date)"/>
 								<xsl:text>)</xsl:text>
@@ -789,13 +813,7 @@
 				</xsl:with-param>
 			</xsl:call-template>
 			
-			<xsl:call-template name="datafield">
-				<xsl:with-param name="tag">940</xsl:with-param>
-				<xsl:with-param name="ind2">1</xsl:with-param>
-				<xsl:with-param name="subfields">
-					<marc:subfield code="a">DAO</marc:subfield>
-				</xsl:with-param>
-			</xsl:call-template>
+
 		</marc:record>
 	</xsl:template>
 
@@ -2547,6 +2565,7 @@
 			<xsl:with-param name="tag">035</xsl:with-param>
 			<xsl:with-param name="subfields">
 				<marc:subfield code='a'>
+					<xsl:if test="$isBrooker">(Brooker)</xsl:if>
 					<xsl:value-of select="."/>
 				</marc:subfield>
 			</xsl:with-param>
@@ -2851,10 +2870,17 @@
 							<xsl:value-of
 								select="substring-after(hdl, 'http://hdl.handle.net/2345.2/')"/>
 						</xsl:when>
+						<xsl:when test="$isHanvey='true'">
+							<xsl:text>MS2001_039_</xsl:text>
+							<xsl:value-of select="substring-after(hdl, '/')"/>
+						</xsl:when>
+						<xsl:when test="$isBrooker='true'">
+							<xsl:text>brooker_</xsl:text>
+							<xsl:value-of select="parent::mods:mods/mods:identifier[@type='local']"/>
+						</xsl:when>
 						<xsl:otherwise>
-							<xsl:if test="$isHanvey='true'">
-								<xsl:text>MS2001_039_</xsl:text>
-							</xsl:if>
+	
+
 							<xsl:value-of select="substring-after(hdl, '/')"/>
 						</xsl:otherwise>
 					</xsl:choose>
