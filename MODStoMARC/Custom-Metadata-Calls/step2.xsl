@@ -34,8 +34,51 @@
         <xsl:copy>
             <!-- And everything inside it -->
             <xsl:apply-templates select="@* | *"/>
- 
+            <xsl:if test="not(mods:extension)">
+                <mods:extension>
+                    <pid>
+                        <xsl:value-of select="preceding-sibling::pid"/>
+                    </pid>
+                    <xsl:text>&#xa;</xsl:text>
+                    <creation_date>
+                        <xsl:value-of select="preceding-sibling::creation_date"/>
+                    </creation_date>
+                    <xsl:text>&#xa;</xsl:text>
+                    <digital_surrogates>
+                        <xsl:value-of select="preceding-sibling::mets:fileSec/mets:fileGrp/mets:file[position() = last()]/@SEQ"/>
+                        <xsl:value-of select="following-sibling::mets:fileSec/mets:fileGrp/mets:file[position() = last()]/@SEQ"/>
+                    </digital_surrogates>
+                    
+                    <label>
+                        <xsl:value-of select="preceding-sibling::mets:structMap/mets:div/mets:div[1]/mets:div[1]/@LABEL"/>
+                        <xsl:value-of select="following-sibling::mets:structMap/mets:div/mets:div[1]/mets:div[1]/@LABEL"/>
+                    </label>
+                    <xsl:text>&#xa;</xsl:text>
+                    <hdl>
+                        
+                        <xsl:value-of select="following-sibling::premis/descendant::objectIdentifierValue"/>                        
+                        <xsl:value-of select="preceding-sibling::premis/descendant::objectIdentifierValue"/> 
+                        <xsl:value-of select="following-sibling::handle"/>
+                        <xsl:value-of select="preceding-sibling::handle"/>
+                        <xsl:value-of select="following-sibling::object/descendant::objectIdentifierValue"/>
+                        <xsl:value-of select="preceding-sibling::object/descendant::objectIdentifierValue"/>
+                        
+                        
+                        
+                        
+                    </hdl>
+                    <xsl:text>&#xa;</xsl:text>
+                    <thumbnail>
+                        <xsl:value-of select="following-sibling::thumbnail"/>            
+                    </thumbnail>
+
+                    
+                    
+                </mods:extension>
+                
+            </xsl:if> 
         </xsl:copy>
+
 
     </xsl:template>
 
@@ -58,10 +101,22 @@
             <xsl:text>&#xa;</xsl:text>
             <digital_surrogates>
                 <xsl:value-of select="ancestor::mods:mods/preceding-sibling::mets:fileSec/mets:fileGrp/mets:file[position() = last()]/@SEQ"/>
+                <xsl:value-of select="ancestor::mods:mods/following-sibling::mets:fileSec/mets:fileGrp/mets:file[position() = last()]/@SEQ"/>
             </digital_surrogates>
             <xsl:text>&#xa;</xsl:text>
+            <label>
+                <xsl:value-of select="ancestor::mods:mods/preceding-sibling::mets:structMap/mets:div/mets:div[1]/@LABEL"/>
+                <xsl:value-of select="ancestor::mods:mods/following-sibling::mets:structMap/mets:div/mets:div[1]/@LABEL"/>
+            </label>
+            <xsl:text>&#xa;</xsl:text>
             <hdl>
-                <xsl:value-of select="ancestor::mods:mods/following-sibling::premis/descendant::objectIdentifierValue"/>            
+
+
+                <xsl:value-of select="ancestor::mods:mods/following-sibling::premis/descendant::objectIdentifierValue"/> 
+                <xsl:value-of select="ancestor::mods:mods/preceding-sibling::premis/descendant::objectIdentifierValue"/> 
+
+                
+           
             </hdl>
             <xsl:text>&#xa;</xsl:text>
             <thumbnail>
@@ -70,10 +125,13 @@
         </xsl:copy>
         
         
-    </xsl:template>
+    </xsl:template>   
+    <xsl:template match="mets:structMap"/>
     <xsl:template match="mets:fileSec"/>
     <xsl:template match="premis"/>
     <xsl:template match="thumbnail"/>
+    <xsl:template match="handle"/>
+    <xsl:template match="object"/>
 
 
 

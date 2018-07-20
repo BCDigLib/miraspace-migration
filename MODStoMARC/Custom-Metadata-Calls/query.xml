@@ -16,7 +16,7 @@
             <x_condition>
                 <type>contains</type>
                 <element>localcollection</element>
-                <value>ms2009030</value>
+                <value>brooker</value>
             </x_condition>           
             
             <x_condition>
@@ -25,7 +25,10 @@
                 <value>MODS</value>
             </x_condition> 
         </x_where>
-    </x_query>
         
+    </x_query>
+    
+
+    
    
         </xb:x_queries>
