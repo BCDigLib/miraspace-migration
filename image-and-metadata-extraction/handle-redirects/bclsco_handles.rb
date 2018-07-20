@@ -1,4 +1,5 @@
-# Takes a handle batch file as input
+# Generates handle batch files to revert redirects to BCLSCO in case something 
+# Goes horribly worng. Takes a handle batch file as input.
 
 require 'net/http'
 require 'nokogiri'
