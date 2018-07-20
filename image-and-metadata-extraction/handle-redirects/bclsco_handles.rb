@@ -4,6 +4,15 @@
 require 'net/http'
 require 'nokogiri'
 
+if ARGV.empty?
+  puts "Error: no argument supplied"
+  puts "Usage: ruby redirect_handle.rb path/to/hdl_batch_file.txt"
+elsif File.extname(ARGV[0]) != '.txt'
+  puts "Input file must be a handle batch txt file"
+elsif !Pathname(ARGV[0]).exist?
+  puts "Error: could not find #{ARGV[0]}"
+end
+
 input_file = ARGV[0]
 lines = File.readlines(input_file)
 handles = lines.select! { |line| line.include?("MODIFY") }.map { |line| line.gsub(/MODIFY /, '').gsub(/\n/, '') }
