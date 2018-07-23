@@ -3,6 +3,7 @@
 
 require 'net/http'
 require 'nokogiri'
+require 'pathname'
 
 if ARGV.empty?
   puts "Error: no argument supplied"
