@@ -60,7 +60,9 @@ using the Bavarian State Library's [ViewFromUrl plugin](https://github.com/dbmdz
 to implement this functionality on a case by case basis.
 
 #### Generating manifests
-[metsiiif](https://github.com/BCLibraries/mets-to-iiif) is a Ruby gem that converts 
-a METS file to a IIIF manifest. This has been tested only with METS that conforms 
-to the BC application profile. We will publish it to rubygems.org once we confirm 
-broader compatibility. Feeback and pull requests are welcome.
+* From METS: [metsiiif](https://github.com/BCLibraries/mets-to-iiif) generates 
+a IIIF manifest from a METS XML file.
+* From DigiTool metadata: [dtliiif](https://github.com/BCDigLib/digitool-to-iiif) 
+generates a IIIF manifest from a DigiTool digital entity file.
+* From ArchivesSpace metadata: [aspaceiiif](https://github.com/BCDigLib/aspace-to-iiif) 
+generates a IIIF manifest from an ArchivesSpace digital object record.

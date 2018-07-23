@@ -1,5 +1,5 @@
 This repository supports Boston College Digital Library's migration from
-DigiTool to MiraSpace, a homegrown repository environment that leverages 
+DigiTool to MiraSpace, a homegrown digital repository environment that leverages 
 ArchivesSpace, Mirador, and Alma/Primo.
 
 Additional documentation is available on the staff wiki (BC login required): 
