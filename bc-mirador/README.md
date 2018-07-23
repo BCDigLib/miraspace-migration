@@ -65,4 +65,6 @@ a IIIF manifest from a METS XML file.
 * From DigiTool metadata: [dtliiif](https://github.com/BCDigLib/digitool-to-iiif) 
 generates a IIIF manifest from a DigiTool digital entity file.
 * From ArchivesSpace metadata: [aspaceiiif](https://github.com/BCDigLib/aspace-to-iiif) 
-generates a IIIF manifest from an ArchivesSpace digital object record.
+generates a IIIF manifest from an ArchivesSpace digital object record. We are 
+currently refactoring this gem to take a resource record as input instead and 
+generate digital objects for all archival objects descended from the resource.
