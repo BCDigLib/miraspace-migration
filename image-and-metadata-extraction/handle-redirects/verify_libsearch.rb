@@ -9,7 +9,6 @@ urls = lines.select { |line| line.include?("URL") }
             .map { |el| el.gsub(/\n/, '').split(' ') }
             .flatten
             .select { |el| el.include?('http') }
-results = {}
 
 urls.each do |url|
   response = Net::HTTP.get(URI.parse(url))
@@ -17,10 +16,8 @@ urls.each do |url|
   # Check for response. Responses are actually bad in this case because it 
   # means SimpleSearch found an error.
   if response.length > 0
-    results[url] = "Encountered errors"
+    puts "#{url}\tEncountered errors"
   else
-    results[url] = "No errors found"
+    puts "#{url}\tNo errors found"
   end
 end
-
-results.each { |k, v| puts "#{k}\t#{v}" }
