@@ -93,6 +93,7 @@
     <genre value="easement" term="Manuscripts" auth="gmgpc"/>
     <genre value="military record" term="Manuscripts" auth="gmgpc"/>
     <genre value="survey document" term="Documents" auth="gmgpc"/>
+    <genre value="survey" term="Documents" auth="gmgpc"/>
     <genre value="legal contract" term="Manuscripts" auth="gmgpc"/>
     <genre value="diary" term="Manuscripts" auth="gmgpc"/>
     <genre value="military document" term="Documents" auth="gmgpc"/>
