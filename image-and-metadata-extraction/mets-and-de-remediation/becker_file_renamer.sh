@@ -7,5 +7,5 @@
 # As always, test first by removing "-i ''" from the sed commands. This will output the 
 # results to the console instead of editing the file inline.
 
-sed -i '' 's/.*__/g' becker.mrk
+sed -i '' 's/[0-9]+_*[0-9]+__//g' becker.mrk
 sed -i '' 's/_tif*_jp2000//g' becker.mrk
