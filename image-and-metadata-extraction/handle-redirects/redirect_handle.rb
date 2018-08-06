@@ -24,3 +24,4 @@ MODIFY #{handle}
   EOF
 
 puts modify_statement
+puts ""
