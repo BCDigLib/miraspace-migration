@@ -1,6 +1,5 @@
 # Creates a Mirador view for a single manifest. Requires manifest file generated 
 # by metsiiif gem (https://github.com/BCLibraries/mets-to-iiif)
-# Note that GA_TRACKING_ID must be replaced with Google Analytics tracking ID
 
 require 'json'
 require 'pathname'
@@ -76,13 +75,13 @@ def build_document(file)
 
 <head>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3008279-23"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'GA_TRACKING_ID');
+    gtag('config', 'UA-3008279-23');
   </script>
   <title>#{identifier}</title>
   <meta charset="UTF-8">
