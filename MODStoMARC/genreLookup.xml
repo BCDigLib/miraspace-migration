@@ -73,7 +73,7 @@
     <genre value="postcard" term="Manuscripts" auth="gmgpc"/>
     <genre value="appraisal" term="Manuscripts" auth="gmgpc"/>
     <genre value="estate inventory" term="Manuscripts" auth="gmgpc"/>
-    <genre value="letter" term="Manuscripts" auth="gmgpc"/>
+   <!-- <genre value="letter" term="Manuscripts" auth="gmgpc"/>-->
     <genre value="oath of allegiance" term="Manuscripts" auth="gmgpc"/>
     <genre value="arrest warrant" term="Manuscripts" auth="gmgpc"/>
     <genre value="church service" term="Manuscripts" auth="gmgpc"/>
@@ -85,6 +85,13 @@
     <genre value="death records" term="Manuscripts" auth="gmgpc"/>
     <genre value="marriage certificate" term="Manuscripts" auth="gmgpc"/>
     <genre value="tax bill" term="Manuscripts" auth="gmgpc"/>
+    <genre value="tax record" term="Manuscripts" auth="gmgpc"/>
+    <genre value="tax records" term="Manuscripts" auth="gmgpc"/>
+    <genre value="tax act" term="Documents" auth="gmgpc"/>
+    <genre value="tax law" term="Documents" auth="gmgpc"/>
+    <genre value="tax document" term="Documents" auth="gmgpc"/>
+    <genre value="law" term="Documents" auth="gmgpc"/>
+    <genre value="school record" term="Manuscripts" auth="gmgpc"/>
     <genre value="description of property" term="Manuscripts" auth="gmgpc"/>
     <genre value="permit" term="Manuscripts" auth="gmgpc"/>
     <genre value="sermon" term="Manuscripts" auth="gmgpc"/>
@@ -114,6 +121,9 @@
     <genre value="affidavit" term="Manuscripts" auth="gmgpc"/>
     <genre value="guardian appointment" term="Manuscripts" auth="gmgpc"/>
     <genre value="indentured servitude contract" term="Manuscripts" auth="gmgpc"/>
+    <!--add missing genre-->
+    <genre value="indenture" term="Documents" auth="gmgpc"/>
+    <genre value="indenture, property deed" term="Documents" auth="gmgpc"/>
     <genre value="financial records" term="Manuscripts" auth="gmgpc"/>
     <genre value="note" term="Manuscripts" auth="gmgpc"/>
     <genre value="report card" term="Cards" auth="gmgpc"/>
@@ -150,7 +160,31 @@
     <genre value="genre" term="Albums" auth="gmgpc"/>
     <genre value="legislation" term="Manuscripts" auth="gmgpc"/>
     <genre value="letter" term="Correspondence" auth="lctgm"/>
+    <genre value="letters" term="Correspondence" auth="lctgm"/>
+    <genre value="waybill" term="Documents" auth="lctgm"/>
+    <genre value="docket" term="Documents" auth="lctgm"/>
+    <genre value="plaque" term="Documents" auth="lctgm"/>
+    <genre value="check" term="Documents" auth="lctgm"/>
+    <genre value="list" term="Documents" auth="lctgm"/>
+    <genre value="abatement notice" term="Documents" auth="lctgm"/>
+    <genre value="jury list" term="Documents" auth="lctgm"/>
+    <genre value="court records" term="Documents" auth="lctgm"/>
+    <genre value="discharge of judgment" term="Documents" auth="lctgm"/>
+    <genre value="insurance document" term="Documents" auth="lctgm"/>
+    <genre value="motion" term="Documents" auth="lctgm"/>
+    <genre value="envelope" term="Documents" auth="lctgm"/>
+    <genre value="loan" term="Documents" auth="lctgm"/>
+    <genre value="title report" term="Documents" auth="lctgm"/>
+    <genre value="probate inventory" term="Documents" auth="lctgm"/>
+    <genre value="legal form" term="Documents" auth="lctgm"/>
+    <genre value="town record" term="Documents" auth="lctgm"/>
+    <genre value="quitclaim deed" term="Documents" auth="lctgm"/>
+    <genre value="land charter" term="Documents" auth="lctgm"/>
+    <genre value="appointment letter" term="Documents" auth="lctgm"/>
+    <genre value="debt agreement" term="Documents" auth="lctgm"/>
+    <genre value="selectmen's report" term="Documents" auth="lctgm"/>
     <genre value="memoir" term="Manuscripts" auth="gmgpc"/>
+    <genre value="memo" term="Manuscripts" auth="gmgpc"/>
     <!-- rbprov -->
     <genre value="Bookseller's labels" term="Manuscripts" auth="gmgpc"/>
 </genreLookup>
