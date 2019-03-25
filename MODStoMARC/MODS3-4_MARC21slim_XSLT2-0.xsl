@@ -1378,10 +1378,10 @@
 			</xsl:with-param>
 		</xsl:call-template>
 
-
+		
 		<xsl:if
 			test="($isHanvey='true' and (.=parent::mods:mods/mods:genre[position()=last()])) or $isBrooker='true'">
-
+	
 
 			<xsl:call-template name="datafield">
 
@@ -1406,7 +1406,7 @@
 					</xsl:for-each>
 				</xsl:with-param>
 			</xsl:call-template>
-
+			
 		</xsl:if>
 
 	</xsl:template>
